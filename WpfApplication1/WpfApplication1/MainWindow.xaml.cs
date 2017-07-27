@@ -25,14 +25,20 @@ namespace WpfApplication1
         public MainWindow()
         {
             InitializeComponent();
-            string namespaces = " xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation' xmlns:x='http://schemas.microsoft.com/winfx/2006/xaml' ";
-            string button =
+            string buttonXaml =
                 @"<Button Content='Hi' x:Name='button'></Button>";
-            button = button.Insert(button.IndexOf(' '), namespaces);
-            MemoryStream stream = new MemoryStream(ASCIIEncoding.UTF8.GetBytes(button));
-            Button b = (Button)XamlReader.Load(stream);
-            this.StackPanel.Children.Add(b);
-            this.Label.Text = button.Replace(namespaces, "");
+            this.StackPanel.Children.Add((Button)GetControl(buttonXaml));
+            this.Label.Text = buttonXaml;
+        }
+
+        private object GetControl(string rawXaml)
+        {
+            string namespaces =
+                " xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation' xmlns:x='http://schemas.microsoft.com/winfx/2006/xaml' ";
+            rawXaml = rawXaml.Insert(rawXaml.IndexOf(' '), namespaces);
+            MemoryStream stream = new MemoryStream(ASCIIEncoding.UTF8.GetBytes(rawXaml));
+            return XamlReader.Load(stream);
+
         }
     }
 }
