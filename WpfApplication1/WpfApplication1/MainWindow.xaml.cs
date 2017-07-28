@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
@@ -25,19 +22,15 @@ namespace WpfApplication1
         public MainWindow()
         {
             InitializeComponent();
-            string buttonXaml =
-                @"<Button Content='Hi' x:Name='button'></Button>";
-            this.StackPanel.Children.Add((Button)GetControl(buttonXaml));
-            this.Label.Text = buttonXaml;
-        }
+            ListView.ItemsSource = new List<Control_Definition>()
+            {
 
-        private object GetControl(string rawXaml)
-        {
-            string namespaces =
-                " xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation' xmlns:x='http://schemas.microsoft.com/winfx/2006/xaml' ";
-            rawXaml = rawXaml.Insert(rawXaml.IndexOf(' '), namespaces);
-            MemoryStream stream = new MemoryStream(ASCIIEncoding.UTF8.GetBytes(rawXaml));
-            return XamlReader.Load(stream);
+                new Control_Definition(@"<Button Style='{StaticResource MaterialDesignRaisedLightButton}'>Raised-Light</Button>"),
+                new Control_Definition(@"<Button Style='{StaticResource MaterialDesignRaisedButton}'>Raised</Button>"),
+                new Control_Definition(@"<Button Style='{StaticResource MaterialDesignRaisedDarkButton}'>Raised-Dark</Button>"),
+                new Control_Definition(@"<Button Style='{StaticResource MaterialDesignRaisedAccentButton}'>Raised-Accent</Button>"),
+                new Control_Definition(@"<Button Style='{StaticResource MaterialDesignFlatButton}'>Flat</Button>"),
+            };
 
         }
     }

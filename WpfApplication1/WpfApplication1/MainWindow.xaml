@@ -2,12 +2,95 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApplication1"
         xmlns:e="clr-namespace:ICSharpCode.AvalonEdit;assembly=ICSharpCode.AvalonEdit"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <StackPanel x:Name="StackPanel">
-        <e:TextEditor x:Name="Label" FontSize="12pt" IsReadOnly="True" FontFamily="Consolas" Text="Hey" SyntaxHighlighting="XML"></e:TextEditor>
+        Title="MaterialDesignDemo" Height="350" Width="525">
+    <Window.Resources>
+        <Style TargetType="ItemsControl" BasedOn="{x:Null}">
+            <Setter Property="ItemTemplate">
+                <Setter.Value>
+                    <DataTemplate DataType="{x:Type local:Control_Definition}">
+                        <Grid HorizontalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition SharedSizeGroup="A" />
+                                <ColumnDefinition SharedSizeGroup="b"/>
+                            </Grid.ColumnDefinitions>
+                            <ContentPresenter Grid.Column="0" Margin="10" Content="{Binding Control}" />
+                            <TextBox HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="Consolas" IsReadOnly="True" Grid.Column="1" Text="{Binding XAML}" />
+                        </Grid>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Grid.IsSharedSizeScope" Value="True"></Setter>
+        </Style>
+    </Window.Resources>
+    <StackPanel x:Name="StackPanel" HorizontalAlignment="Center" VerticalAlignment="Center"> 
+        <ItemsControl x:Name="ListView" />
     </StackPanel>
 </Window>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
