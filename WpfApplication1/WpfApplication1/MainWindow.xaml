@@ -18,19 +18,29 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition SharedSizeGroup="A" />
                                 <ColumnDefinition SharedSizeGroup="b"/>
+                                <ColumnDefinition SharedSizeGroup="c"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
                             <ContentPresenter Grid.Column="0" Margin="10" Content="{Binding Control}" />
-                            <global:MvvmTextEditor SyntaxHighlighting="XML" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="Consolas" IsReadOnly="True" Grid.Column="1" Text="{Binding XAML}" />
+                            <Border Grid.Column="1" BorderThickness="1" BorderBrush="Gray">
+                                <global:MvvmTextEditor x:Name="Editor" Margin="10,0,0,0" SyntaxHighlighting="XML" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="Consolas" IsReadOnly="True" Grid.Column="1" Text="{Binding XAML}" />
+                            </Border>
+                            <Button ToolTip="Copy code" Grid.Column="2" Tag="{Binding Path=Text, ElementName=Editor}">
+                                <materialDesign:PackIcon Kind="ContentCopy"></materialDesign:PackIcon>
+                            </Button>
                         </Grid>
                     </DataTemplate>
                 </Setter.Value>
             </Setter>
             <Setter Property="Grid.IsSharedSizeScope" Value="True"></Setter>
         </Style>
+        <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatButton}" >
+            <EventSetter Event="Click" Handler="CopyButtonEventSetter_OnHandler"></EventSetter>
+        </Style>
     </Window.Resources>
-    <StackPanel x:Name="StackPanel" HorizontalAlignment="Center" VerticalAlignment="Center"> 
-        <ItemsControl x:Name="ListView" />
-    </StackPanel>
+    <Grid   >
+        <ItemsControl x:Name="ListView" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <materialDesign:Snackbar x:Name="Snackbar"></materialDesign:Snackbar>
+    </Grid>
 </Window>
 
 

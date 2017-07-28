@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MaterialDesignThemes.Wpf;
 
 namespace WpfApplication1
 {
@@ -22,6 +23,7 @@ namespace WpfApplication1
         public MainWindow()
         {
             InitializeComponent();
+            Snackbar.MessageQueue = new SnackbarMessageQueue();
             ListView.ItemsSource = new List<Control_Definition>()
             {
 
@@ -32,6 +34,13 @@ namespace WpfApplication1
                 new Control_Definition(@"<Button Style='{StaticResource MaterialDesignFlatButton}'>Flat</Button>"),
             };
 
+        }
+
+        private void CopyButtonEventSetter_OnHandler(object sender, RoutedEventArgs e) {
+            var button = (sender as Button);
+            if(button.Tag!=null)
+            Clipboard.SetDataObject(button.Tag);                        
+            Snackbar.MessageQueue.Enqueue(" Copied to clipboard");
         }
     }
 }
