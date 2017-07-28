@@ -27,11 +27,20 @@ namespace DisplayXamlDemo
             ListView.ItemsSource = new List<Control_Definition>()
             {
 
-                new Control_Definition(@"<Button Style='{StaticResource MaterialDesignRaisedLightButton}'>Raised-Light</Button>"),
-                new Control_Definition(@"<Button Style='{StaticResource MaterialDesignRaisedButton}'>Raised</Button>"),
-                new Control_Definition(@"<Button Style='{StaticResource MaterialDesignRaisedDarkButton}'>Raised-Dark</Button>"),
-                new Control_Definition(@"<Button Style='{StaticResource MaterialDesignRaisedAccentButton}'>Raised-Accent</Button>"),
-                new Control_Definition(@"<Button Style='{StaticResource MaterialDesignFlatButton}'>Flat</Button>"),
+                new Control_Definition(
+@"<Button Style='{StaticResource MaterialDesignRaisedLightButton}'>LIGHT</Button>"),
+                new Control_Definition(
+@"<Button Style='{StaticResource MaterialDesignRaisedButton}'>MEDIUM</Button>"),
+                new Control_Definition(
+@"<Button Style='{StaticResource MaterialDesignRaisedDarkButton}'>DARK</Button>"),
+                new Control_Definition(
+@"<Button Style='{StaticResource MaterialDesignRaisedAccentButton}'>ACCENT</Button>"),
+                new Control_Definition(
+@"<Button Style='{StaticResource MaterialDesignFlatButton}'>FLAT</Button>"),
+                new Control_Definition(
+@"<Button Style='{StaticResource MaterialDesignFloatingActionMiniLightButton}'>
+    <materialDesign:PackIcon Kind='Alarm' Height='24' Width='24' />
+</Button>")
             };
 
         }
