@@ -6,6 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApplication1"
         xmlns:e="clr-namespace:ICSharpCode.AvalonEdit;assembly=ICSharpCode.AvalonEdit"
+        xmlns:global="clr-namespace:"
         mc:Ignorable="d"
         Title="MaterialDesignDemo" Height="350" Width="525">
     <Window.Resources>
@@ -19,7 +20,7 @@
                                 <ColumnDefinition SharedSizeGroup="b"/>
                             </Grid.ColumnDefinitions>
                             <ContentPresenter Grid.Column="0" Margin="10" Content="{Binding Control}" />
-                            <TextBox HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="Consolas" IsReadOnly="True" Grid.Column="1" Text="{Binding XAML}" />
+                            <global:MvvmTextEditor SyntaxHighlighting="XML" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="Consolas" IsReadOnly="True" Grid.Column="1" Text="{Binding XAML}" />
                         </Grid>
                     </DataTemplate>
                 </Setter.Value>

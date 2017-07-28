@@ -1,18 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Markup;
+using WpfApplication1.Annotations;
 
 namespace WpfApplication1 {
-    public class Control_Definition {
+    public class Control_Definition  {
         public Control_Definition(string xaml) {
             Control = GetControl(xaml);
-            XAML = xaml;
+            XAML = xaml;           
         }
         private Control GetControl(string rawXaml) {
             string namespaces =
@@ -25,5 +28,6 @@ namespace WpfApplication1 {
 
         public string XAML { get; set; }
         public Control Control { get; set; }
+
     }
 }
