@@ -13,7 +13,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MaterialDesignThemes.Wpf;
 
-namespace WpfApplication1
+namespace DisplayXamlDemo
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Markup;
-using WpfApplication1.Annotations;
+using DisplayXamlDemo.Annotations;
 
-namespace WpfApplication1 {
+namespace DisplayXamlDemo {
     public class Control_Definition  {
         public Control_Definition(string xaml) {
             Control = GetControl(xaml);
