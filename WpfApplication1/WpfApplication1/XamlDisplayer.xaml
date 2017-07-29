@@ -1,0 +1,21 @@
+﻿<UserControl x:Class="WpfApplication1.XamlDisplayer"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WpfApplication1"
+             xmlns:displayXamlDemo="clr-namespace:DisplayXamlDemo"
+             mc:Ignorable="d">
+    <Grid HorizontalAlignment="Center">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition SharedSizeGroup="A" />
+            <ColumnDefinition SharedSizeGroup="b"/>
+            <ColumnDefinition SharedSizeGroup="c"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <ContentPresenter x:Name="ContentPresenter" Grid.Column="0" Margin="10" Content="{Binding Content}" />
+        <Border Grid.Column="1" BorderThickness="1" BorderBrush="Gray">
+            <displayXamlDemo:MvvmTextEditor WordWrap="True" x:Name="TextEditor" Margin="10,0,10,0" SyntaxHighlighting="XML" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="Consolas" IsReadOnly="True" Grid.Column="1" Text="{Binding XAML}" />
+        </Border>
+        <Button Click="CopyButton_OnClicked" ToolTip="Copy code" Grid.Column="2" Tag="{Binding Path=Text, ElementName=TextEditor}" />
+    </Grid>
+</UserControl>

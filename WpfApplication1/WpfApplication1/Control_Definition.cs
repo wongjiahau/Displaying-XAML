@@ -9,21 +9,23 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Markup;
+using System.Xml;
 using DisplayXamlDemo.Annotations;
 
 namespace DisplayXamlDemo {
-    public class Control_Definition  {
+    public class Control_Definition {
         public Control_Definition(string xaml) {
             Control = GetControl(xaml);
-            XAML = xaml;           
+            XAML = xaml;
         }
         private Control GetControl(string rawXaml) {
             string namespaces =
-                " xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation' xmlns:x='http://schemas.microsoft.com/winfx/2006/xaml' xmlns:materialDesign='http://materialdesigninxaml.net/winfx/xaml/themes' ";
+                @" xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation' 
+                xmlns:x='http://schemas.microsoft.com/winfx/2006/xaml' 
+                xmlns:materialDesign='http://materialdesigninxaml.net/winfx/xaml/themes' ";
             rawXaml = rawXaml.Insert(rawXaml.IndexOf(' ') , namespaces);
             MemoryStream stream = new MemoryStream(ASCIIEncoding.UTF8.GetBytes(rawXaml));
-            return (Control)XamlReader.Load(stream);
-
+            return (Control)XamlReader.Load(stream);            
         }
 
         public string XAML { get; set; }

@@ -6,47 +6,74 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DisplayXamlDemo"
         xmlns:e="clr-namespace:ICSharpCode.AvalonEdit;assembly=ICSharpCode.AvalonEdit"        
+        xmlns:converters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"
+        xmlns:wpfApplication1="clr-namespace:WpfApplication1"
         mc:Ignorable="d"
         Title="MaterialDesignDemo" WindowState="Maximized" Height="350" Width="525">
-    <Window.Resources>
-        <Style TargetType="ItemsControl" BasedOn="{x:Null}">
-            <Setter Property="ItemTemplate">
-                <Setter.Value>
-                    <DataTemplate DataType="{x:Type local:Control_Definition}">
-                        <Grid HorizontalAlignment="Center">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition SharedSizeGroup="A" />
-                                <ColumnDefinition SharedSizeGroup="b"/>
-                                <ColumnDefinition SharedSizeGroup="c"></ColumnDefinition>
-                            </Grid.ColumnDefinitions>
-                            <ContentPresenter Grid.Column="0" Margin="10" Content="{Binding Control}" />
-                            <Border Grid.Column="1" BorderThickness="1" BorderBrush="Gray">
-                                <local:MvvmTextEditor x:Name="Editor" Margin="10,0,10,0" SyntaxHighlighting="XML" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="Consolas" IsReadOnly="True" Grid.Column="1" Text="{Binding XAML}" />
-                            </Border>
-                            <Button ToolTip="Copy code" Grid.Column="2" Tag="{Binding Path=Text, ElementName=Editor}" />
-                        </Grid>
-                    </DataTemplate>
-                </Setter.Value>
-            </Setter>
-            <Setter Property="Grid.IsSharedSizeScope" Value="True"></Setter>
-        </Style>
-        <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatButton}" >
-            <EventSetter Event="Click" Handler="CopyButtonEventSetter_OnHandler"></EventSetter>
-            <Setter Property="Content">
-                <Setter.Value>
-                    COPY
-                </Setter.Value>
-            </Setter>
-        </Style>
-    </Window.Resources>
     <Grid>
-        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Center">
-            <TextBlock FontWeight="Bold" VerticalAlignment="Center">MaterialDesign Namespace</TextBlock>
-            <TextBox Margin="10,0,0,0" VerticalAlignment="Center" x:Name="NamespaceTextBox" IsReadOnly="True" FontFamily="Consolas">xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"</TextBox>
-            <Button Tag="{Binding Path=Text, ElementName=NamespaceTextBox}"></Button>
-        </StackPanel>
-        <ItemsControl x:Name="ListView" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Grid.Resources>
+            <Style TargetType="ItemsControl" BasedOn="{x:Null}">
+                <Setter Property="ItemTemplate">
+                    <Setter.Value>
+                        <DataTemplate DataType="{x:Type local:Control_Definition}">
+                            <Grid HorizontalAlignment="Center">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition SharedSizeGroup="A" />
+                                    <ColumnDefinition SharedSizeGroup="b"/>
+                                    <ColumnDefinition SharedSizeGroup="c"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <ContentPresenter Grid.Column="0" Margin="10" Content="{Binding Control}" />
+                                <Border Grid.Column="1" BorderThickness="1" BorderBrush="Gray">
+                                    <local:MvvmTextEditor x:Name="Editor" Margin="10,0,10,0" SyntaxHighlighting="XML" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="Consolas" IsReadOnly="True" Grid.Column="1" Text="{Binding XAML}" />
+                                </Border>
+                                <Button ToolTip="Copy code" Grid.Column="2" Tag="{Binding Path=Text, ElementName=Editor}" />
+                            </Grid>
+                        </DataTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Grid.IsSharedSizeScope" Value="True"></Setter>
+            </Style>
+            <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedButton}" >
+                <EventSetter Event="Click" Handler="CopyButtonEventSetter_OnHandler"></EventSetter>
+                <Setter Property="Content">
+                    <Setter.Value>
+                        COPY
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+        </Grid.Resources>
+        <ScrollViewer>
+            <DockPanel>
+                <TextBox TextWrapping="Wrap" x:Name="Label"></TextBox>
+                <TextBlock DockPanel.Dock="Top" HorizontalAlignment="Center" Style="{StaticResource MaterialDesignHeadlineTextBlock}">Buttons &amp; Toggles</TextBlock>
+                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Center">
+                    <TextBlock FontWeight="Bold" VerticalAlignment="Center">MaterialDesign Namespace</TextBlock>
+                    <TextBox Margin="10,0,0,0" VerticalAlignment="Center" x:Name="NamespaceTextBox" IsReadOnly="True" FontFamily="Consolas">xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"</TextBox>
+                    <Button Tag="{Binding Path=Text, ElementName=NamespaceTextBox}"></Button>
+                </StackPanel>
+
+                <ItemsControl Margin="10" DockPanel.Dock="Bottom" x:Name="ListView" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <wpfApplication1:XamlDisplayer  x:Name="A">
+                    <materialDesign:PopupBox Style="{StaticResource MaterialDesignMultiFloatingActionPopupBox}"
+                                             PlacementMode="BottomAndAlignCentres"
+                                             ToolTipService.Placement="Right"
+                                             ToolTip="PopupBox, Style MaterialDesignMultiFloatingActionPopupBox"
+                                                                                             >
+                        <StackPanel>
+                            <Button ToolTip="One with custom opacity" Opacity="0.5">1</Button>
+                            <Button ToolTip="Two">2</Button>
+                            <Button ToolTip="Three">3</Button>
+                        </StackPanel>
+                    </materialDesign:PopupBox>
+                </wpfApplication1:XamlDisplayer>
+                <wpfApplication1:XamlDisplayer x:Name="B">
+                    
+                </wpfApplication1:XamlDisplayer>
+            </DockPanel>
+        </ScrollViewer>
         <materialDesign:Snackbar x:Name="Snackbar"></materialDesign:Snackbar>
+        
     </Grid>
 </Window>
 
