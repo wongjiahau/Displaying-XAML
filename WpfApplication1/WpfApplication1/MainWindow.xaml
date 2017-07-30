@@ -54,7 +54,7 @@
                 </StackPanel>
 
                 <ItemsControl Margin="10" DockPanel.Dock="Bottom" x:Name="ListView" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                <StackPanel>
+                <StackPanel Grid.IsSharedSizeScope="True">
                     <wpfApplication1:XamlDisplayer  x:Name="A">
                         <materialDesign:PopupBox Style="{StaticResource MaterialDesignMultiFloatingActionPopupBox}"
                                              PlacementMode="BottomAndAlignCentres"
