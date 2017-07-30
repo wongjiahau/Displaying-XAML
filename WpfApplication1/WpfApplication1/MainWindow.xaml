@@ -54,26 +54,30 @@
                 </StackPanel>
 
                 <ItemsControl Margin="10" DockPanel.Dock="Bottom" x:Name="ListView" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                <wpfApplication1:XamlDisplayer  x:Name="A">
-                    <materialDesign:PopupBox Style="{StaticResource MaterialDesignMultiFloatingActionPopupBox}"
+                <StackPanel>
+                    <wpfApplication1:XamlDisplayer  x:Name="A">
+                        <materialDesign:PopupBox Style="{StaticResource MaterialDesignMultiFloatingActionPopupBox}"
                                              PlacementMode="BottomAndAlignCentres"
                                              ToolTipService.Placement="Right"
                                              ToolTip="PopupBox, Style MaterialDesignMultiFloatingActionPopupBox"
                                                                                              >
-                        <StackPanel>
-                            <Button ToolTip="One with custom opacity" Opacity="0.5">1</Button>
-                            <Button ToolTip="Two">2</Button>
-                            <Button ToolTip="Three">3</Button>
-                        </StackPanel>
-                    </materialDesign:PopupBox>
-                </wpfApplication1:XamlDisplayer>
-                <wpfApplication1:XamlDisplayer x:Name="B">
-                    
-                </wpfApplication1:XamlDisplayer>
+                            <StackPanel>
+                                <Button ToolTip="One with custom opacity" Opacity="0.5">1</Button>
+                                <Button ToolTip="Two">2</Button>
+                                <Button ToolTip="Three">3</Button>
+                            </StackPanel>
+                        </materialDesign:PopupBox>
+                    </wpfApplication1:XamlDisplayer>
+                    <wpfApplication1:XamlDisplayer x:Name="B">
+                        <Button Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}">
+                            <materialDesign:PackIcon Kind="Alarm" Height="24" Width="24" />
+                        </Button>
+                    </wpfApplication1:XamlDisplayer>
+                </StackPanel>
             </DockPanel>
         </ScrollViewer>
         <materialDesign:Snackbar x:Name="Snackbar"></materialDesign:Snackbar>
-        
+
     </Grid>
 </Window>
 

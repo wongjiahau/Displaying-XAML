@@ -59,6 +59,9 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="XamlStyler.Core">
+      <HintPath>..\..\..\XamlStyler\XamlStyler.Core\bin\Release\XamlStyler.Core.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -68,6 +71,7 @@
     <Compile Include="XamlDisplayer.xaml.cs">
       <DependentUpon>XamlDisplayer.xaml</DependentUpon>
     </Compile>
+    <Compile Include="XamlDisplayerPanel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

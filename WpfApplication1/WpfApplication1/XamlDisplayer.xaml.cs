@@ -14,6 +14,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+
+
 namespace WpfApplication1 {
     /// <summary>
     /// Interaction logic for XamlDisplayer.xaml
@@ -38,7 +40,7 @@ new FrameworkPropertyMetadata(default(object) , OnContentPropertyChanged));
             var content = e.NewValue as Control;
             if (content != null) {
                 content.Initialized += (sender , args) => {
-                    string xamlToBeDisplayed = RemoveIrrelaventAttributes(XamlWriter.Save(sender));
+                    string xamlToBeDisplayed = Beautify(XamlWriter.Save(sender));
                     if (xamlDisplayer != null) {
                         xamlDisplayer.TextEditor.Text = xamlToBeDisplayed;
                         xamlDisplayer.ContentPresenter.Content = sender;
@@ -51,7 +53,7 @@ new FrameworkPropertyMetadata(default(object) , OnContentPropertyChanged));
         private static void Content_Loaded(object sender , RoutedEventArgs e) {
         }
 
-        private static string RemoveIrrelaventAttributes(string fullXaml) {
+        private static string Beautify(string fullXaml) {
             return fullXaml;
         }
 

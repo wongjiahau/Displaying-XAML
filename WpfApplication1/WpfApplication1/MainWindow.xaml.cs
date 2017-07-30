@@ -17,8 +17,11 @@ using System.Xml;
 using System.Xml.Linq;
 using MaterialDesignThemes.Wpf;
 using WpfApplication1;
+using Xavalon.XamlStyler.Core;
+using Xavalon.XamlStyler.Core.Options;
 using Path = System.IO.Path;
-
+//https://stackoverflow.com/questions/32690299/looping-through-all-nodes-in-xml-file-with-c-sharp\
+//https://github.com/Xavalon/XamlStyler
 namespace DisplayXamlDemo {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -86,9 +89,10 @@ namespace DisplayXamlDemo {
         }
 
         private  void HandleNode(XmlNode node) {
-            if (node.LocalName == "XamlDisplayer") {
+            if (node.LocalName == "XamlDisplayer") {                
                 (this.FindName(node.Attributes["x:Name"].Value) as XamlDisplayer)
-                    .Xaml = node.InnerXml;                
+                    .Xaml = //node.InnerXml;
+                new StylerService(new StylerOptions()).StyleDocument(node.InnerXml);
             }
             else if (node.HasChildNodes) {
                 foreach (XmlNode child in node.ChildNodes) {
