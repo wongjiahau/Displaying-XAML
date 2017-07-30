@@ -29,77 +29,13 @@ namespace DisplayXamlDemo {
     public partial class MainWindow : Window {
         public MainWindow() {
             InitializeComponent();
-            Snackbar.MessageQueue = new SnackbarMessageQueue();
-            ListView.ItemsSource = new List<Control_Definition>()
-            {
-
-                new Control_Definition(
-@"<Button Style='{StaticResource MaterialDesignRaisedLightButton}'>LIGHT</Button>"),
-                new Control_Definition(
-@"<Button Style='{StaticResource MaterialDesignRaisedButton}'>MEDIUM</Button>"),
-                new Control_Definition(
-@"<Button Style='{StaticResource MaterialDesignRaisedDarkButton}'>DARK</Button>"),
-                new Control_Definition(
-@"<Button Style='{StaticResource MaterialDesignRaisedAccentButton}'>ACCENT</Button>"),
-                new Control_Definition(
-@"<Button Style='{StaticResource MaterialDesignFlatButton}'>FLAT</Button>"),
-                new Control_Definition(
-@"<Button Style='{StaticResource MaterialDesignFloatingActionMiniLightButton}'>
-    <materialDesign:PackIcon Kind='Alarm' Height='24' Width='24' />
-</Button>"),
-                new Control_Definition(
-@"<Button Style='{StaticResource MaterialDesignFloatingActionMiniButton}'>
-    <materialDesign:PackIcon Kind='Alarm' Height='24' Width='24' />
-</Button>"),
-                new Control_Definition(
-@"<Button Style='{StaticResource MaterialDesignFloatingActionMiniDarkButton}'>
-    <materialDesign:PackIcon Kind='Alarm' Height='24' Width='24' />
-</Button>"),
-                new Control_Definition(
-@"<Button Style='{StaticResource MaterialDesignFloatingActionLightButton}'>
-    <materialDesign:PackIcon Kind='Alarm' Height='24' Width='24' />
-</Button>"),
-                new Control_Definition(
-@"<Button Style='{StaticResource MaterialDesignFloatingActionButton}'>
-    <materialDesign:PackIcon Kind='Alarm' Height='24' Width='24' />
-</Button>"),
-                new Control_Definition(
-@"<Button Style='{StaticResource MaterialDesignFloatingActionDarkButton}'>
-    <materialDesign:PackIcon Kind='Alarm' Height='24' Width='24' />
-</Button>"),
-                new Control_Definition(
-@"<materialDesign:PopupBox  Style='{StaticResource MaterialDesignMultiFloatingActionPopupBox}'
-    PlacementMode='BottomAndAlignCentres'>
-    <StackPanel>
-        <Button Opacity='0.5'>1</Button>
-        <Button>2</Button>
-        <Button>3</Button>
-     </StackPanel>
-</materialDesign:PopupBox>"),
-                new Control_Definition(
-@"<materialDesign:Badged Badge='3'>
-    <Button>MAIL</Button>
-</materialDesign:Badged>")
-            };                        
+            Snackbar.MessageQueue = new SnackbarMessageQueue();            
             var xdoc = new XmlDocument();
             xdoc.Load(@"C:\Users\User\Source\Repos\Displaying-XAML\WpfApplication1\WpfApplication1\MainWindow.xaml");
-            foreach (XmlNode node in xdoc.ChildNodes) {
-                HandleNode(node);
-            }         
+            XamlDisplayer.HandleAllNode(this, xdoc);                  
         }
 
-        private  void HandleNode(XmlNode node) {
-            if (node.LocalName == "XamlDisplayer") {                
-                (this.FindName(node.Attributes["x:Name"].Value) as XamlDisplayer)
-                    .Xaml = //node.InnerXml;
-                new StylerService(new StylerOptions()).StyleDocument(node.InnerXml);
-            }
-            else if (node.HasChildNodes) {
-                foreach (XmlNode child in node.ChildNodes) {
-                    HandleNode(child);
-                }
-            }                            
-        }
+        
 
         private void CopyButtonEventSetter_OnHandler(object sender , RoutedEventArgs e) {
             var button = (sender as Button);
