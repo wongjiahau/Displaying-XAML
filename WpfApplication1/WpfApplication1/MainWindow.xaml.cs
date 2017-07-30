@@ -16,7 +16,7 @@ using System.Windows.Shapes;
 using System.Xml;
 using System.Xml.Linq;
 using MaterialDesignThemes.Wpf;
-using WpfApplication1;
+using DisplayXamlDemo;
 using Xavalon.XamlStyler.Core;
 using Xavalon.XamlStyler.Core.Options;
 using Path = System.IO.Path;
@@ -28,20 +28,12 @@ namespace DisplayXamlDemo {
     /// </summary>
     public partial class MainWindow : Window {
         public MainWindow() {
-            InitializeComponent();
-            Snackbar.MessageQueue = new SnackbarMessageQueue();            
+            InitializeComponent();       
+            string pathOfXamlSource = 
+                @"C:\Users\User\Source\Repos\Displaying-XAML\WpfApplication1\WpfApplication1\MainWindow.xaml";
             var xdoc = new XmlDocument();
-            xdoc.Load(@"C:\Users\User\Source\Repos\Displaying-XAML\WpfApplication1\WpfApplication1\MainWindow.xaml");
-            XamlDisplayer.HandleAllNode(this, xdoc);                  
-        }
-
-        
-
-        private void CopyButtonEventSetter_OnHandler(object sender , RoutedEventArgs e) {
-            var button = (sender as Button);
-            if (button.Tag != null)
-                Clipboard.SetDataObject(button.Tag);
-            Snackbar.MessageQueue.Enqueue(" Copied to clipboard");
+            xdoc.Load(pathOfXamlSource);
+            XamlDisplayer.DisplayXamlCode(this, xdoc);        
         }
     }
 }
