@@ -21,12 +21,13 @@
                 </Button>
             </xamlDisplayer:XamlDisplayer>
             <local:XamlDisplayer x:Name="C">
-                <TextBox materialDesign:HintAssist.Hint="Floating Hint Textbox" 
-                         Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
             </local:XamlDisplayer>
             <xamlDisplayer:XamlDisplayerPanel x:Name="XamlDisplayerPanel">
                 <Label x:Name="Key">testing</Label>
                 <Label x:Name="Lol">testing 2</Label>
+                <TextBox x:Name="TextBox" Width="150" materialDesign:HintAssist.Hint="Floating Hint Textbox" 
+                         Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+
             </xamlDisplayer:XamlDisplayerPanel>
         </StackPanel>
         

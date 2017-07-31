@@ -51,7 +51,7 @@ namespace DisplayXamlDemo {
                     }
                     else {
                         var xamlDisplayer = _xamlDisplayerDic[nameAttribute.Value];
-//                        var xamlDisplayer = VisualTreeHelper.GetParent((DependencyObject)this.FindName(nameAttribute.Value)) as XamlDisplayer;
+                        child.Attributes.Remove(nameAttribute);
                         string xamlToBeDisplayed = Beautify(child.OuterXml);
                         if (xamlDisplayer != null) xamlDisplayer.Xaml = xamlToBeDisplayed;
                     }
