@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -27,13 +28,18 @@ namespace DisplayXamlDemo {
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window {
-        public MainWindow() {
-            InitializeComponent();       
-            string pathOfXamlSource = 
-                @"C:\Users\User\Source\Repos\Displaying-XAML\WpfApplication1\WpfApplication1\MainWindow.xaml";
-            var xdoc = new XmlDocument();
-            xdoc.Load(pathOfXamlSource);
-            XamlDisplayer.DisplayXamlCode(this, xdoc);        
+        public MainWindow() {                            
+            InitializeComponent();                        
+            try {           
+                string url =
+                    "https://raw.githubusercontent.com/wongjiahau/Displaying-XAML/master/WpfApplication1/WpfApplication1/MainWindow.xaml";
+                XamlDisplayer.DisplayXamlCode(this, url);
+            }
+            catch (Exception e) {
+                MessageBox.Show(e.Message);
+            }
         }
+
+
     }
 }

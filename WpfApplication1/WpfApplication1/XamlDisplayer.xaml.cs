@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -71,7 +73,30 @@ new FrameworkPropertyMetadata(default(object) , OnContentPropertyChanged));
             Clipboard.SetDataObject(_codeToBeCopied);
         }
 
-        public static void DisplayXamlCode(Control host , XmlNode node) {
+        public static void DisplayXamlCode(Control host, string sourceCodeUrl) {
+            string sourceCode = DownloadFile(sourceCodeUrl);
+            var doc = new XmlDocument();
+            doc.LoadXml(sourceCode);
+            DisplayXamlCode(host, doc);
+            
+            string DownloadFile(string sourceURL) //https://gist.github.com/nboubakr/7812375
+            {
+                int bufferSize = 1024;
+                bufferSize *= 1000;
+                long existLen = 0;
+                var httpReq = (HttpWebRequest)WebRequest.Create(sourceURL);
+                httpReq.AddRange((int)existLen);
+                var httpRes = (HttpWebResponse)httpReq.GetResponse();
+                var responseStream = httpRes.GetResponseStream();
+                if (responseStream == null) return "Fail to fetch file";
+                int byteSize;
+                byte[] downBuffer = new byte[bufferSize];
+                var streamReader = new StreamReader(responseStream);
+                return streamReader.ReadToEnd();
+            }
+        }
+
+        private static void DisplayXamlCode(Control host , XmlNode node) {                    
             if (node.LocalName == "XamlDisplayer") {
                 string xamlToBeDisplayed = Beautify(node.InnerXml);
                 var nameAttribute = node.Attributes["x:Name"];
@@ -130,5 +155,6 @@ new FrameworkPropertyMetadata(default(object) , OnContentPropertyChanged));
         }
 
 
+        
     }
 }
