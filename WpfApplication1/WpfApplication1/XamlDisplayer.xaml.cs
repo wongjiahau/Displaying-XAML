@@ -27,12 +27,13 @@ namespace DisplayXamlDemo {
     public partial class XamlDisplayer : UserControl {
         public XamlDisplayer() {
             InitializeComponent();
+            
         }
 
         #region  ContentProperty
         public new object Content {
-            get { return GetValue(ContentProperty); }
-            set { SetValue(ContentProperty , value); }
+            get => GetValue(ContentProperty);
+            set => SetValue(ContentProperty , value);
         }
 
         public new static readonly DependencyProperty ContentProperty = DependencyProperty.Register
@@ -155,6 +156,11 @@ new FrameworkPropertyMetadata(default(object) , OnContentPropertyChanged));
         }
 
 
-        
+        private void XamlDisplayer_OnLoaded(object sender, RoutedEventArgs e) {
+            var parent = VisualTreeHelper.GetParent(this) as UIElement;
+            if (parent != null) {
+                Grid.SetIsSharedSizeScope(parent , true);
+            }
+        }
     }
 }

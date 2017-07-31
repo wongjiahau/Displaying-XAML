@@ -11,7 +11,7 @@
         mc:Ignorable="d"
         Title="MaterialDesignDemo" WindowState="Maximized" Height="350" Width="525">
     <ScrollViewer VerticalAlignment="Stretch" VerticalContentAlignment="Center">
-        <StackPanel Grid.IsSharedSizeScope="True" VerticalAlignment="Center">
+        <StackPanel VerticalAlignment="Center">
             <xamlDisplayer:XamlDisplayer x:Name="A">
                 <Button Style="{StaticResource MaterialDesignRaisedButton}">Raised-Button</Button>
             </xamlDisplayer:XamlDisplayer>
