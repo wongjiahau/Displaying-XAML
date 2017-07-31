@@ -9,7 +9,7 @@
         xmlns:converters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"
         xmlns:xamlDisplayer="clr-namespace:DisplayXamlDemo"
         mc:Ignorable="d"
-        Title="MaterialDesignDemo" WindowState="Maximized" Height="350" Width="525">
+        Title="MaterialDesignDemo" x:Name="Main" WindowState="Maximized" Height="350" Width="525">
     <ScrollViewer VerticalAlignment="Stretch" VerticalContentAlignment="Center">
         <StackPanel VerticalAlignment="Center">
             <xamlDisplayer:XamlDisplayer x:Name="A">
@@ -24,7 +24,12 @@
                 <TextBox materialDesign:HintAssist.Hint="Floating Hint Textbox" 
                          Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
             </local:XamlDisplayer>
+            <xamlDisplayer:XamlDisplayerPanel x:Name="XamlDisplayerPanel">
+                <Label x:Name="Key">testing</Label>
+                <Label x:Name="Lol">testing 2</Label>
+            </xamlDisplayer:XamlDisplayerPanel>
         </StackPanel>
+        
     </ScrollViewer>
 </Window>
 
