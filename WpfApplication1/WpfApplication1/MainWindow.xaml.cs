@@ -28,16 +28,19 @@ namespace DisplayXamlDemo {
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window {
-        public MainWindow() {                            
-            InitializeComponent();                        
-            try {           
-                string url =
-                    "https://raw.githubusercontent.com/wongjiahau/Displaying-XAML/master/WpfApplication1/WpfApplication1/MainWindow.xaml";
-                XamlDisplayer.DisplayXamlCode(this, url);
-            }
-            catch (Exception e) {
-                MessageBox.Show(e.Message);
-            }
+        public MainWindow() {
+            InitializeComponent();
+
+            string url =
+                "https://raw.githubusercontent.com/wongjiahau/Displaying-XAML/master/WpfApplication1/WpfApplication1/MainWindow.xaml";
+            string localSource = @"C:\Users\User\Source\Repos\Displaying-XAML\WpfApplication1\WpfApplication1\MainWindow.xaml";
+            string xaml = File.ReadAllText(localSource);
+            var xmlDoc = new XmlDocument();
+            xmlDoc.LoadXml(xaml);
+            this.XamlDisplayerPanel.Initialize(xmlDoc);
+            //XamlDisplayer.DisplayXamlCode(this, url);
+
+
         }
 
 

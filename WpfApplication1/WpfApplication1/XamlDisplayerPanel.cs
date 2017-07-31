@@ -15,7 +15,6 @@ using Xavalon.XamlStyler.Core.Options;
 namespace DisplayXamlDemo {
     public class XamlDisplayerPanel : StackPanel {
         public XamlDisplayerPanel() {
-            this.Loaded += XamlDisplayerPanel_Loaded;
             Grid.SetIsSharedSizeScope(this , true);
         }
 
@@ -23,7 +22,7 @@ namespace DisplayXamlDemo {
             string sourceCode = DownloadFile(sourceCodeUrl);
             var doc = new XmlDocument();
             doc.LoadXml(sourceCode);
-            DisplayXamlCode(host , doc);
+            DisplayXamlCode(doc);
 
             string DownloadFile(string sourceURL) //https://gist.github.com/nboubakr/7812375
             {
@@ -42,25 +41,27 @@ namespace DisplayXamlDemo {
             }
         }
 
-        private void DisplayXamlCode(Control host , XmlNode node) {
+
+        private void DisplayXamlCode(XmlNode node) {            
             if (node.LocalName.Contains("XamlDisplayerPanel")) {
                 foreach (XmlNode child in node.ChildNodes) {
-                    var nameAttribute = node.Attributes["x:Name"];
+                    var nameAttribute = child.Attributes["x:Name"];
                     if (nameAttribute == null) {
                         MessageBox.Show("Please specify the value of 'x:Name' for each element in XamlDisplayerPanel");
                     }
                     else {
-                        var xamlDisplayer = VisualTreeHelper.GetParent((DependencyObject) this.FindName(nameAttribute.Value)) as XamlDisplayer;                        
-                        string xamlToBeDisplayed = Beautify(child.InnerXml);
-                        xamlDisplayer.Xaml = xamlToBeDisplayed;
+                        var xamlDisplayer = _xamlDisplayerDic[nameAttribute.Value];
+//                        var xamlDisplayer = VisualTreeHelper.GetParent((DependencyObject)this.FindName(nameAttribute.Value)) as XamlDisplayer;
+                        string xamlToBeDisplayed = Beautify(child.OuterXml);
+                        if (xamlDisplayer != null) xamlDisplayer.Xaml = xamlToBeDisplayed;
                     }
                 }
             }
             else if (node.HasChildNodes) {
                 foreach (XmlNode child in node.ChildNodes) {
-                    DisplayXamlCode(host , child);
+                    DisplayXamlCode(child);
                 }
-            }
+            }            
             string Beautify(string fullXaml)
             {
                 var styler = new StylerService(new StylerOptions() { IndentWithTabs = true });
@@ -68,11 +69,11 @@ namespace DisplayXamlDemo {
                 result = RemoveIrrelaventAttributes(result);
                 result = RemoveEmptyLines(result);
                 return result;
-                string RemoveIrrelaventAttributes(string xaml)
-                {
+                string RemoveIrrelaventAttributes(string xaml) {
                     return xaml
-                            .Replace("xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\"" , "")
-                            .Replace("xmlns:materialDesign=\"http://materialdesigninxaml.net/winfx/xaml/themes\"" , "")
+                        .Replace("xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\"", "")
+                        .Replace("xmlns:materialDesign=\"http://materialdesigninxaml.net/winfx/xaml/themes\"", "")
+                        .Replace("xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\"", "");
                         ;
                 }
 
@@ -99,19 +100,46 @@ namespace DisplayXamlDemo {
                     return sb.ToString();
                 }
             }
-
         }
 
+        public void Initialize(XmlDocument xmlDocument) {
+            WrapEachChild();
+            DisplayXamlCode(xmlDocument);
+        }
 
-        private void XamlDisplayerPanel_Loaded(object sender , RoutedEventArgs e) {
-            for (int i = 0 ; i < Children.Count ; i++) {
+        private Dictionary<string, XamlDisplayer> _xamlDisplayerDic;
+        private void WrapEachChild() {
+            _xamlDisplayerDic = new Dictionary<string, XamlDisplayer>();
+            var newChildren = new List<UIElement>();            
+            while (this.Children.Count > 0 ) {
                 var child = Children[0];
-                this.Children.Remove(child);
+                this.Children.Remove(child);  
+                newChildren.Add(child);
+            }
+            for (int i = 0; i < newChildren.Count; i++) {
+                var child = newChildren[i];
                 var xamlDisplayer = new XamlDisplayer() {
                     Content = child
                 };
-                this.Children.Add(xamlDisplayer);
+                this.Children.Add(xamlDisplayer);       
+                _xamlDisplayerDic.Add(GetName(child),xamlDisplayer);
             }
+
+            string GetName(object obj)
+            {
+                // First see if it is a FrameworkElement
+                var element = obj as FrameworkElement;
+                if (element != null)
+                    return element.Name;
+                // If not, try reflection to get the value of a Name property.
+                try { return (string)obj.GetType().GetProperty("Name").GetValue(obj , null); }
+                catch {
+                    // Last of all, try reflection to get the value of a Name field.
+                    try { return (string)obj.GetType().GetField("Name").GetValue(obj); }
+                    catch { return null; }
+                }
+            }
+
         }
     }
 
