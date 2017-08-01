@@ -14,17 +14,7 @@ namespace CodeDisplayer {
             Grid.SetIsSharedSizeScope(this , true);
         }
         
-        public static string DownloadFile(string sourceURL) //https://gist.github.com/nboubakr/7812375
-           {
-            long existLen = 0;
-            var httpReq = (HttpWebRequest)WebRequest.Create(sourceURL);
-            httpReq.AddRange((int)existLen);
-            var httpRes = (HttpWebResponse)httpReq.GetResponse();
-            var responseStream = httpRes.GetResponseStream();
-            if (responseStream == null) return "Fail to fetch file";
-            var streamReader = new StreamReader(responseStream);
-            return streamReader.ReadToEnd();
-        }
+        
 
         public void Initialize(XmlDocument xmlDocument) {
             WrapEachChildWithXamlDisplayer();
