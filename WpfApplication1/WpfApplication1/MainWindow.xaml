@@ -16,9 +16,6 @@
                 <Button Style="{StaticResource MaterialDesignRaisedButton}">Raised-Button</Button>
             </xamlDisplayer:XamlDisplayer>
             <xamlDisplayer:XamlDisplayer x:Name="B">
-                <Button Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}">
-                    <materialDesign:PackIcon Kind="Alarm" Height="24" Width="24" />
-                </Button>
             </xamlDisplayer:XamlDisplayer>
             <local:XamlDisplayer x:Name="C">
             </local:XamlDisplayer>
@@ -27,6 +24,9 @@
                 <Label x:Name="Lol">testing 2</Label>
                 <TextBox x:Name="TextBox" Width="150" materialDesign:HintAssist.Hint="Floating Hint Textbox" 
                          Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                <Button x:Name="H" Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}">
+                    <materialDesign:PackIcon Kind="Alarm" Height="24" Width="24" />
+                </Button>
 
             </xamlDisplayer:XamlDisplayerPanel>
         </StackPanel>

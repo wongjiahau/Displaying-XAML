@@ -17,32 +17,25 @@ namespace DisplayXamlDemo {
         public XamlDisplayerPanel() {
             Grid.SetIsSharedSizeScope(this , true);
         }
-
-        public void DisplayXamlCode(Control host , string sourceCodeUrl) {
-            string sourceCode = DownloadFile(sourceCodeUrl);
-            var doc = new XmlDocument();
-            doc.LoadXml(sourceCode);
-            DisplayXamlCode(doc);
-
-            string DownloadFile(string sourceURL) //https://gist.github.com/nboubakr/7812375
-            {
-                int bufferSize = 1024;
-                bufferSize *= 1000;
-                long existLen = 0;
-                var httpReq = (HttpWebRequest)WebRequest.Create(sourceURL);
-                httpReq.AddRange((int)existLen);
-                var httpRes = (HttpWebResponse)httpReq.GetResponse();
-                var responseStream = httpRes.GetResponseStream();
-                if (responseStream == null) return "Fail to fetch file";
-                int byteSize;
-                byte[] downBuffer = new byte[bufferSize];
-                var streamReader = new StreamReader(responseStream);
-                return streamReader.ReadToEnd();
-            }
+        
+        public static string DownloadFile(string sourceURL) //https://gist.github.com/nboubakr/7812375
+           {
+            long existLen = 0;
+            var httpReq = (HttpWebRequest)WebRequest.Create(sourceURL);
+            httpReq.AddRange((int)existLen);
+            var httpRes = (HttpWebResponse)httpReq.GetResponse();
+            var responseStream = httpRes.GetResponseStream();
+            if (responseStream == null) return "Fail to fetch file";
+            var streamReader = new StreamReader(responseStream);
+            return streamReader.ReadToEnd();
         }
 
+        public void Initialize(XmlDocument xmlDocument) {
+            WrapEachChildWithXamlDisplayer();
+            DisplayXamlCode(xmlDocument);
+        }
 
-        private void DisplayXamlCode(XmlNode node) {            
+        private void DisplayXamlCode(XmlNode node) {
             if (node.LocalName.Contains("XamlDisplayerPanel")) {
                 foreach (XmlNode child in node.ChildNodes) {
                     var nameAttribute = child.Attributes["x:Name"];
@@ -61,7 +54,7 @@ namespace DisplayXamlDemo {
                 foreach (XmlNode child in node.ChildNodes) {
                     DisplayXamlCode(child);
                 }
-            }            
+            }
             string Beautify(string fullXaml)
             {
                 var styler = new StylerService(new StylerOptions() { IndentWithTabs = true });
@@ -69,12 +62,13 @@ namespace DisplayXamlDemo {
                 result = RemoveIrrelaventAttributes(result);
                 result = RemoveEmptyLines(result);
                 return result;
-                string RemoveIrrelaventAttributes(string xaml) {
+                string RemoveIrrelaventAttributes(string xaml)
+                {
                     return xaml
-                        .Replace("xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\"", "")
-                        .Replace("xmlns:materialDesign=\"http://materialdesigninxaml.net/winfx/xaml/themes\"", "")
-                        .Replace("xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\"", "");
-                        ;
+                        .Replace("xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\"" , "")
+                        .Replace("xmlns:materialDesign=\"http://materialdesigninxaml.net/winfx/xaml/themes\"" , "")
+                        .Replace("xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\"" , "");
+                    ;
                 }
 
                 string RemoveEmptyLines(string xaml)
@@ -102,27 +96,21 @@ namespace DisplayXamlDemo {
             }
         }
 
-        public void Initialize(XmlDocument xmlDocument) {
-            WrapEachChild();
-            DisplayXamlCode(xmlDocument);
-        }
-
-        private Dictionary<string, XamlDisplayer> _xamlDisplayerDic;
-        private void WrapEachChild() {
-            _xamlDisplayerDic = new Dictionary<string, XamlDisplayer>();
-            var newChildren = new List<UIElement>();            
-            while (this.Children.Count > 0 ) {
+        private Dictionary<string , XamlDisplayer> _xamlDisplayerDic;
+        private void WrapEachChildWithXamlDisplayer() {
+            _xamlDisplayerDic = new Dictionary<string , XamlDisplayer>();
+            var newChildren = new List<UIElement>();
+            while (this.Children.Count > 0) {
                 var child = Children[0];
-                this.Children.Remove(child);  
+                this.Children.Remove(child);
                 newChildren.Add(child);
             }
-            for (int i = 0; i < newChildren.Count; i++) {
-                var child = newChildren[i];
+            foreach (var child in newChildren) {
                 var xamlDisplayer = new XamlDisplayer() {
                     Content = child
                 };
-                this.Children.Add(xamlDisplayer);       
-                _xamlDisplayerDic.Add(GetName(child),xamlDisplayer);
+                this.Children.Add(xamlDisplayer);
+                _xamlDisplayerDic.Add(GetName(child) , xamlDisplayer);
             }
 
             string GetName(object obj)

@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:DisplayXamlDemo"
              xmlns:displayXamlDemo="clr-namespace:DisplayXamlDemo"
-             mc:Ignorable="d" Loaded="XamlDisplayer_OnLoaded">
+             mc:Ignorable="d">
     <Grid HorizontalAlignment="Center">
         <Grid.ColumnDefinitions>
             <ColumnDefinition SharedSizeGroup="Content" />
