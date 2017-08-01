@@ -9,16 +9,13 @@
         Title="MaterialDesignDemo" x:Name="Main" WindowState="Maximized" Height="350" Width="525">
     <ScrollViewer VerticalAlignment="Stretch" VerticalContentAlignment="Center">
         <StackPanel VerticalAlignment="Center">
-            <codeDisplayer:XamlDisplayer IsCodeDisplayed="True" CodeToBeDisplayed="eher" x:Name="A">
-                <Button Style="{StaticResource MaterialDesignRaisedButton}">who live in</Button>
-            </codeDisplayer:XamlDisplayer>
             <ToggleButton x:Name="ToggleButton"></ToggleButton>
             <codeDisplayer:XamlDisplayerPanel IsCodeDisplayed="{Binding ElementName=ToggleButton, Path=IsChecked, Mode=TwoWay}" x:Name="XamlDisplayerPanel">
-                <Label x:Name="Key">testing</Label>
-                <Label x:Name="Lol">testing 2</Label>
-                <TextBox x:Name="TextBox" Width="150" materialDesign:HintAssist.Hint="Floating Hint Textbox" 
+                <Label>testing</Label>
+                <Label>testing 2</Label>
+                <TextBox Width="150" materialDesign:HintAssist.Hint="Floating Hint Textbox" 
                          Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
-                <Button x:Name="H" Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}">
+                <Button Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}">
                     <materialDesign:PackIcon Kind="Alarm" Height="24" Width="24" />
                 </Button>
 
