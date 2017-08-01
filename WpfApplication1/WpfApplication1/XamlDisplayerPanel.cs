@@ -36,7 +36,7 @@ namespace DisplayXamlDemo {
         }
 
         private void DisplayXamlCode(XmlNode node) {
-            if (node.LocalName.Contains("XamlDisplayerPanel")) {
+            if (node.LocalName.Contains(nameof(XamlDisplayerPanel))) {
                 foreach (XmlNode child in node.ChildNodes) {
                     var nameAttribute = child.Attributes["x:Name"];
                     if (nameAttribute == null) {
@@ -46,7 +46,7 @@ namespace DisplayXamlDemo {
                         var xamlDisplayer = _xamlDisplayerDic[nameAttribute.Value];
                         child.Attributes.Remove(nameAttribute);
                         string xamlToBeDisplayed = Beautify(child.OuterXml);
-                        if (xamlDisplayer != null) xamlDisplayer.Xaml = xamlToBeDisplayed;
+                        if (xamlDisplayer != null) xamlDisplayer.CodeToBeDisplayed = xamlToBeDisplayed;
                     }
                 }
             }
@@ -129,6 +129,29 @@ namespace DisplayXamlDemo {
             }
 
         }
+
+        #region  IsCodeDisplayedProperty
+        public bool IsCodeDisplayed {
+            get { return (bool)GetValue(IsCodeDisplayedProperty); }
+            set { SetValue(IsCodeDisplayedProperty , value); }
+        }
+
+        // Using a DependencyProperty as the backing store for IsCodeDisplayed.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty IsCodeDisplayedProperty =
+            DependencyProperty.Register("IsCodeDisplayed" , typeof(bool) , typeof(XamlDisplayerPanel) , new PropertyMetadata(true, IsCodeDisplayedPropertyChanged));
+
+        private static void IsCodeDisplayedPropertyChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e) {
+            var d = dependencyObject as XamlDisplayerPanel;
+            bool newValue = (bool) e.NewValue;
+            if (d == null) return;
+            foreach (var child in d.Children) {
+                var xamlDisplayer = child as XamlDisplayer;
+                if (xamlDisplayer == null) continue;
+                xamlDisplayer.IsCodeDisplayed = newValue;
+            }
+        }
+
+        #endregion
     }
 
 }

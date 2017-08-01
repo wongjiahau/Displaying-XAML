@@ -23,7 +23,7 @@ namespace DisplayXamlDemo {
     public partial class XamlDisplayer : UserControl {
         public XamlDisplayer() {
             InitializeComponent();
-            
+
         }
         #region  ContentProperty
         public new object Content {
@@ -40,13 +40,13 @@ new FrameworkPropertyMetadata(default(object) , OnContentPropertyChanged));
         }
         #endregion
 
-        #region XamlProperty
-        public string Xaml {
-            get => (string)GetValue(XamlProperty);
-            set => SetValue(XamlProperty , value);
-        }        
-        public static readonly DependencyProperty XamlProperty =
-            DependencyProperty.Register("Xaml" , typeof(string) , typeof(XamlDisplayer) , new PropertyMetadata("" , OnXamlPropertyChanged));        
+        #region CodeToBeDisplayedProperty
+        public string CodeToBeDisplayed {
+            get => (string)GetValue(CodeToBeDisplayedProperty);
+            set => SetValue(CodeToBeDisplayedProperty , value);
+        }
+        public static readonly DependencyProperty CodeToBeDisplayedProperty =
+            DependencyProperty.Register("CodeToBeDisplayed" , typeof(string) , typeof(XamlDisplayer) , new PropertyMetadata("" , OnXamlPropertyChanged));
         private static void OnXamlPropertyChanged(DependencyObject d , DependencyPropertyChangedEventArgs e) {
             var xamlDisplayer = d as XamlDisplayer;
             if (xamlDisplayer == null) return;
@@ -55,9 +55,51 @@ new FrameworkPropertyMetadata(default(object) , OnContentPropertyChanged));
         }
         #endregion
 
+        #region IsCodeDisplayed
+
+
+        public bool IsCodeDisplayed {
+            get { return (bool)GetValue(IsCodeDisplayedProperty); }
+            set { SetValue(IsCodeDisplayedProperty , value); }
+        }
+
+        // Using a DependencyProperty as the backing store for IsCodeDisplayed.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty IsCodeDisplayedProperty =
+            DependencyProperty.Register("IsCodeDisplayed" , typeof(bool) , typeof(XamlDisplayer) , new PropertyMetadata(true , OnIsCodeDisplayedPropertyChanged));
+
+        private static void OnIsCodeDisplayedPropertyChanged(DependencyObject d , DependencyPropertyChangedEventArgs e) {
+            var xamlDisplayer = d as XamlDisplayer;
+            if (xamlDisplayer == null) return;
+            if ((bool) e.NewValue) {
+                xamlDisplayer.ExpandCodeDisplaingArea();
+            }
+            else {
+                xamlDisplayer.CollapseCodeDisplayingArea();
+            }                        
+        }
+
+        private void CollapseCodeDisplayingArea() {
+            var col1 = this.Grid.ColumnDefinitions[1];
+            var col2 = this.Grid.ColumnDefinitions[2];
+            if (col1.ActualWidth == 0 && col2.ActualWidth == 0) return;
+            col1.Width = new GridLength(0);
+            col2.Width = new GridLength(0);
+        }
+
+        private void ExpandCodeDisplaingArea() {
+            var col1 = this.Grid.ColumnDefinitions[1];
+            var col2 = this.Grid.ColumnDefinitions[2];
+            if (col1.ActualWidth > 0 && col2.ActualWidth > 0) return;
+            col1.Width = new GridLength(0, GridUnitType.Auto);            
+            col2.Width = new GridLength(0, GridUnitType.Auto);
+        }
+        #endregion
+
         private string _codeToBeCopied;
         private void CopyButton_OnClicked(object sender , RoutedEventArgs e) {
             Clipboard.SetDataObject(_codeToBeCopied);
         }
+
+
     }
 }

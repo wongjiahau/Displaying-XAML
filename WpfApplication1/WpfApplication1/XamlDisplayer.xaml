@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:DisplayXamlDemo"
              xmlns:displayXamlDemo="clr-namespace:DisplayXamlDemo"
              mc:Ignorable="d">
-    <Grid HorizontalAlignment="Center">
+    <Grid x:Name="Grid" HorizontalAlignment="Center">
         <Grid.ColumnDefinitions>
             <ColumnDefinition SharedSizeGroup="Content" />
             <ColumnDefinition SharedSizeGroup="XamlCode"/>

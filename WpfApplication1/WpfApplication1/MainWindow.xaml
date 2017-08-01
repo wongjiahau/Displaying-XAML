@@ -12,14 +12,11 @@
         Title="MaterialDesignDemo" x:Name="Main" WindowState="Maximized" Height="350" Width="525">
     <ScrollViewer VerticalAlignment="Stretch" VerticalContentAlignment="Center">
         <StackPanel VerticalAlignment="Center">
-            <xamlDisplayer:XamlDisplayer x:Name="A">
-                <Button Style="{StaticResource MaterialDesignRaisedButton}">Raised-Button</Button>
+            <xamlDisplayer:XamlDisplayer IsCodeDisplayed="True" CodeToBeDisplayed="eher" x:Name="A">
+                <Button Style="{StaticResource MaterialDesignRaisedButton}">who live in</Button>
             </xamlDisplayer:XamlDisplayer>
-            <xamlDisplayer:XamlDisplayer x:Name="B">
-            </xamlDisplayer:XamlDisplayer>
-            <local:XamlDisplayer x:Name="C">
-            </local:XamlDisplayer>
-            <xamlDisplayer:XamlDisplayerPanel x:Name="XamlDisplayerPanel">
+            <ToggleButton x:Name="ToggleButton"></ToggleButton>
+            <xamlDisplayer:XamlDisplayerPanel IsCodeDisplayed="{Binding ElementName=ToggleButton, Path=IsChecked}" x:Name="XamlDisplayerPanel">
                 <Label x:Name="Key">testing</Label>
                 <Label x:Name="Lol">testing 2</Label>
                 <TextBox x:Name="TextBox" Width="150" materialDesign:HintAssist.Hint="Floating Hint Textbox" 
