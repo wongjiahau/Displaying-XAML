@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -14,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 
 namespace DisplayXamlDemo {
@@ -70,36 +72,51 @@ new FrameworkPropertyMetadata(default(object) , OnContentPropertyChanged));
         private static void OnIsCodeDisplayedPropertyChanged(DependencyObject d , DependencyPropertyChangedEventArgs e) {
             var xamlDisplayer = d as XamlDisplayer;
             if (xamlDisplayer == null) return;
-            if ((bool) e.NewValue) {
+            if ((bool)e.NewValue) {
                 xamlDisplayer.ExpandCodeDisplaingArea();
             }
             else {
                 xamlDisplayer.CollapseCodeDisplayingArea();
-            }                        
+            }
         }
 
         private void CollapseCodeDisplayingArea() {
             var col1 = this.Grid.ColumnDefinitions[1];
-            var col2 = this.Grid.ColumnDefinitions[2];
-            if (col1.ActualWidth == 0 && col2.ActualWidth == 0) return;
+            if (col1.ActualWidth == 0) return;
             col1.Width = new GridLength(0);
-            col2.Width = new GridLength(0);
         }
 
         private void ExpandCodeDisplaingArea() {
             var col1 = this.Grid.ColumnDefinitions[1];
-            var col2 = this.Grid.ColumnDefinitions[2];
-            if (col1.ActualWidth > 0 && col2.ActualWidth > 0) return;
-            col1.Width = new GridLength(0, GridUnitType.Auto);            
-            col2.Width = new GridLength(0, GridUnitType.Auto);
+            if (col1.ActualWidth > 0) return;
+            col1.Width = new GridLength(0 , GridUnitType.Auto);
         }
         #endregion
 
+        #region EventHandlers
         private string _codeToBeCopied;
         private void CopyButton_OnClicked(object sender , RoutedEventArgs e) {
             Clipboard.SetDataObject(_codeToBeCopied);
+            Popup.IsOpen = true;
+            var timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(1.5);
+            timer.Start();
+            timer.Tick += delegate {
+                Popup.IsOpen = false;
+                timer.Stop();
+            };
+
+
         }
 
+        private void CodeArea_OnMouseEnter(object sender , MouseEventArgs e) {
+            CopyButton.Visibility = Visibility.Visible;
+        }
 
+        private void CodeArea_OnMouseLeave(object sender , MouseEventArgs e) {
+            if (CopyButton.IsMouseOver) return;
+            CopyButton.Visibility = Visibility.Hidden;
+        }
+        #endregion
     }
 }

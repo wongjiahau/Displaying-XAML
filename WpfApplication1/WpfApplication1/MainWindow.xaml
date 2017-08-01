@@ -16,7 +16,7 @@
                 <Button Style="{StaticResource MaterialDesignRaisedButton}">who live in</Button>
             </xamlDisplayer:XamlDisplayer>
             <ToggleButton x:Name="ToggleButton"></ToggleButton>
-            <xamlDisplayer:XamlDisplayerPanel IsCodeDisplayed="{Binding ElementName=ToggleButton, Path=IsChecked}" x:Name="XamlDisplayerPanel">
+            <xamlDisplayer:XamlDisplayerPanel IsCodeDisplayed="{Binding ElementName=ToggleButton, Path=IsChecked, Mode=TwoWay}" x:Name="XamlDisplayerPanel">
                 <Label x:Name="Key">testing</Label>
                 <Label x:Name="Lol">testing 2</Label>
                 <TextBox x:Name="TextBox" Width="150" materialDesign:HintAssist.Hint="Floating Hint Textbox" 

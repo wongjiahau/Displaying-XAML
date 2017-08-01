@@ -21,11 +21,12 @@
         <Border Grid.Column="0" Padding="20">
             <ContentPresenter x:Name="ContentPresenter" Margin="10" Content="{Binding Content}" />
         </Border>
-        <Border Grid.Column="1">
+        <Border Background="{Binding Path=Background, RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}}" Grid.Column="1" MouseEnter="CodeArea_OnMouseEnter" MouseLeave="CodeArea_OnMouseLeave">
             <displayXamlDemo:MvvmTextEditor 
                 WordWrap="True" 
                 x:Name="TextEditor" 
                 Margin="10" 
+                Background="{x:Null}"
                 SyntaxHighlighting="XML" 
                 VerticalScrollBarVisibility="Hidden" 
                 HorizontalScrollBarVisibility="Hidden" 
@@ -34,6 +35,23 @@
                 FontFamily="Consolas" 
                 IsReadOnly="True"/>
         </Border>
-        <Button Style="{StaticResource MaterialDesignFlatButton}" Content="COPY" Margin="10" Click="CopyButton_OnClicked" ToolTip="Copy code" Grid.Column="2" Tag="{Binding Path=Text, ElementName=TextEditor}" />
+        <Button x:Name="CopyButton"
+                Grid.Column="1"
+                Visibility="Hidden" 
+                Style="{x:Null}" 
+                Height="30" 
+                Width="50"
+                Margin="5"
+                HorizontalAlignment="Right" 
+                VerticalAlignment="Bottom" 
+                Content="COPY"   
+                FontWeight="Bold"
+                Click="CopyButton_OnClicked" 
+                ToolTip="Copy code" />
+        <Popup x:Name="Popup" Placement="Mouse" PopupAnimation="Slide" AllowsTransparency="True">
+            <Border Background="Black" HorizontalAlignment="Center">
+                <TextBlock Foreground="White" FontWeight="Bold" Margin="10">Code is copied!</TextBlock>
+            </Border>
+        </Popup>
     </Grid>
 </UserControl>
