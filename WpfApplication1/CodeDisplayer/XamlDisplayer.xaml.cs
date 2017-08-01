@@ -38,7 +38,6 @@ namespace CodeDisplayer {
             var xamlDisplayer = d as XamlDisplayer;
             if (xamlDisplayer == null) return;
             xamlDisplayer.TextEditor.Text = (string)e.NewValue;
-            xamlDisplayer._codeToBeCopied = (string)e.NewValue;
         }
         #endregion
 
@@ -78,10 +77,9 @@ namespace CodeDisplayer {
         }
         #endregion
 
-        #region EventHandlers
-        private string _codeToBeCopied;
-        private void CopyButton_OnClicked(object sender , RoutedEventArgs e) {
-            Clipboard.SetDataObject(_codeToBeCopied);
+        #region EventHandlers        
+        private void CopyButton_OnClicked(object sender , RoutedEventArgs e) {            
+            Clipboard.SetDataObject(TextEditor.SelectedText.Length == 0 ? TextEditor.Text : TextEditor.SelectedText);
             Popup.IsOpen = true;
             var timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromSeconds(1.5);
@@ -89,9 +87,7 @@ namespace CodeDisplayer {
             timer.Tick += delegate {
                 Popup.IsOpen = false;
                 timer.Stop();
-            };
-
-
+            };            
         }
 
         private void CodeArea_OnMouseEnter(object sender , MouseEventArgs e) {
@@ -101,7 +97,7 @@ namespace CodeDisplayer {
         private void CodeArea_OnMouseLeave(object sender , MouseEventArgs e) {
             if (CopyButton.IsMouseOver) return;
             CopyButton.Visibility = Visibility.Hidden;
-        }
-        #endregion
+        }          
+        #endregion     
     }
 }

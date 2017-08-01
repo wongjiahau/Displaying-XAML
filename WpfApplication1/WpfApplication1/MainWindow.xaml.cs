@@ -30,7 +30,6 @@ namespace DisplayXamlDemo {
     public partial class MainWindow : Window {
         public MainWindow() {
             InitializeComponent();
-
             string url =
                 "https://raw.githubusercontent.com/wongjiahau/Displaying-XAML/master/WpfApplication1/WpfApplication1/MainWindow.xaml";
             string localSource = @"C:\Users\User\Source\Repos\Displaying-XAML\WpfApplication1\WpfApplication1\MainWindow.xaml";
