@@ -1,31 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Markup;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 
-
-namespace DisplayXamlDemo {
+namespace CodeDisplayer {
     /// <summary>
     /// This class is to display the Xaml of its child
     /// </summary>
     public partial class XamlDisplayer : UserControl {
         public XamlDisplayer() {
             InitializeComponent();
-
         }
         #region  ContentProperty
         public new object Content {

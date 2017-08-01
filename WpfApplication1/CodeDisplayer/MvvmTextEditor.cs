@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Windows;
 using ICSharpCode.AvalonEdit;
 
-namespace DisplayXamlDemo {
+namespace CodeDisplayer {
     //Refer to https://stackoverflow.com/questions/12344367/making-avalonedit-mvvm-compatible
     public class MvvmTextEditor : TextEditor, INotifyPropertyChanged {
         public static DependencyProperty CaretOffsetProperty =
