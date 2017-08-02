@@ -12,7 +12,7 @@
             <ToggleButton x:Name="ToggleButton"></ToggleButton>
             <codeDisplayer:XamlDisplayerPanel IsCodeDisplayed="{Binding ElementName=ToggleButton, Path=IsChecked, Mode=TwoWay}" x:Name="XamlDisplayerPanel">
                 <Label>testing</Label>
-                <Label>testing 2</Label>
+                <Label>testing</Label>
                 <TextBox Width="150" materialDesign:HintAssist.Hint="Floating Hint Textbox" 
                          Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
                 <Button Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}">
