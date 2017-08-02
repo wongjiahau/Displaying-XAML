@@ -50,8 +50,9 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="XamlStyler.Core">
-      <HintPath>..\..\..\XamlStyler\XamlStyler.Core\bin\Release\XamlStyler.Core.dll</HintPath>
+    <Reference Include="XamlStyler.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=0b11ff60a8153268, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>DependencyPackage\XamlStyler.Core.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
