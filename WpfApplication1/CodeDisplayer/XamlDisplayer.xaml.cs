@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Threading;
 
@@ -11,6 +13,7 @@ namespace CodeDisplayer {
     public partial class XamlDisplayer : UserControl {
         public XamlDisplayer() {
             InitializeComponent();
+            CollapseCodeDisplayingArea();
         }
         #region  ContentProperty
         public new object Content {
@@ -41,7 +44,7 @@ namespace CodeDisplayer {
         }
         #endregion
 
-        #region IsCodeDisplayed
+        #region IsCodeDisplayedProperty
 
 
         public bool IsCodeDisplayed {
@@ -65,20 +68,65 @@ namespace CodeDisplayer {
         }
 
         private void CollapseCodeDisplayingArea() {
-            var col1 = this.Grid.ColumnDefinitions[1];
-            if (col1.ActualWidth == 0) return;
-            col1.Width = new GridLength(0);
+            var row = this.Grid.RowDefinitions[1];
+            if (row.ActualHeight == 0) return;
+            row.Height = new GridLength(0);
         }
 
         private void ExpandCodeDisplaingArea() {
-            var col1 = this.Grid.ColumnDefinitions[1];
-            if (col1.ActualWidth > 0) return;
-            col1.Width = new GridLength(0 , GridUnitType.Auto);
+            var row = this.Grid.RowDefinitions[1];
+            if (row.ActualHeight > 0) return;
+            row.Height = new GridLength(0 , GridUnitType.Auto);
         }
         #endregion
 
+        #region DisplayModeProperty
+        public enum DisplayModeEnum { LeftRight, TopBottom }
+
+
+        public DisplayModeEnum DisplayMode {
+            get { return (DisplayModeEnum)GetValue(DisplayModeProperty); }
+            set { SetValue(DisplayModeProperty , value); }
+        }
+
+        // Using a DependencyProperty as the backing store for DisplayMode.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty DisplayModeProperty =
+            DependencyProperty.Register("DisplayMode" , typeof(DisplayModeEnum) , typeof(XamlDisplayer) , new PropertyMetadata(DisplayModeEnum.LeftRight , OnDisplayModeChanged));
+
+        private static void OnDisplayModeChanged(DependencyObject d , DependencyPropertyChangedEventArgs de) {
+            var xamlDisplayer = d as XamlDisplayer;
+            var newValue = (DisplayModeEnum)de.NewValue;
+            switch (newValue) {
+                case DisplayModeEnum.LeftRight:
+                    xamlDisplayer.SwitchToLeftRightMode();
+                    break;
+                case DisplayModeEnum.TopBottom:
+                    xamlDisplayer.SwitchToTopBottomMode();
+                    break;
+            }
+        }
+
+        private void SwitchToTopBottomMode() {
+            Grid.SetRow(CodeArea , 1);
+            Grid.SetColumn(CodeArea , 0);
+            Grid.SetRow(CopyButton , 1);
+            Grid.SetColumn(CopyButton , 0);
+
+        }
+
+
+        private void SwitchToLeftRightMode() {
+            Grid.SetRow(CodeArea, 0);
+            Grid.SetColumn(CodeArea,1);
+            Grid.SetRow(CopyButton , 0);
+            Grid.SetColumn(CopyButton , 1);
+
+        }
+
+        #endregion
+
         #region EventHandlers        
-        private void CopyButton_OnClicked(object sender , RoutedEventArgs e) {            
+        private void CopyButton_OnClicked(object sender , RoutedEventArgs e) {
             Clipboard.SetDataObject(TextEditor.SelectedText.Length == 0 ? TextEditor.Text : TextEditor.SelectedText);
             Popup.IsOpen = true;
             var timer = new DispatcherTimer();
@@ -87,7 +135,7 @@ namespace CodeDisplayer {
             timer.Tick += delegate {
                 Popup.IsOpen = false;
                 timer.Stop();
-            };            
+            };
         }
 
         private void CodeArea_OnMouseEnter(object sender , MouseEventArgs e) {
@@ -97,7 +145,9 @@ namespace CodeDisplayer {
         private void CodeArea_OnMouseLeave(object sender , MouseEventArgs e) {
             if (CopyButton.IsMouseOver) return;
             CopyButton.Visibility = Visibility.Hidden;
-        }          
-        #endregion     
+        }
+        #endregion
+
+
     }
 }

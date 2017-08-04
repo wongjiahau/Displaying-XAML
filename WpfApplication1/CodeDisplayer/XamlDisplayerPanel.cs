@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
@@ -13,8 +14,8 @@ namespace CodeDisplayer {
         public XamlDisplayerPanel() {
             Grid.SetIsSharedSizeScope(this , true);
         }
-        
-        
+
+
 
         public void Initialize(XmlDocument xmlDocument) {
             WrapEachChildWithXamlDisplayer();
@@ -23,10 +24,10 @@ namespace CodeDisplayer {
 
         private void DisplayXamlCode(XmlNode node) {
             if (node.LocalName.Contains(nameof(XamlDisplayerPanel))) {
-                for (var i = 0; i < node.ChildNodes.Count; i++) {
+                for (var i = 0 ; i < node.ChildNodes.Count ; i++) {
                     XmlNode child = node.ChildNodes[i];
                     string xamlToBeDisplayed = Beautify(child.OuterXml);
-                    _xamlDisplayers[i].CodeToBeDisplayed = xamlToBeDisplayed;                    
+                    _xamlDisplayers[i].CodeToBeDisplayed = xamlToBeDisplayed;
                 }
             }
             else if (node.HasChildNodes) {
@@ -101,17 +102,43 @@ namespace CodeDisplayer {
 
         // Using a DependencyProperty as the backing store for IsCodeDisplayed.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty IsCodeDisplayedProperty =
-            DependencyProperty.Register("IsCodeDisplayed" , typeof(bool) , typeof(XamlDisplayerPanel) , new PropertyMetadata(true, IsCodeDisplayedPropertyChanged));
+            DependencyProperty.Register("IsCodeDisplayed" , typeof(bool) , typeof(XamlDisplayerPanel) , new PropertyMetadata(true , IsCodeDisplayedPropertyChanged));
 
-        private static void IsCodeDisplayedPropertyChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e) {
+        private static void IsCodeDisplayedPropertyChanged(DependencyObject dependencyObject , DependencyPropertyChangedEventArgs e) {
             var d = dependencyObject as XamlDisplayerPanel;
-            bool newValue = (bool) e.NewValue;
+            bool newValue = (bool)e.NewValue;
             if (d == null) return;
             foreach (var child in d.Children) {
                 var xamlDisplayer = child as XamlDisplayer;
                 if (xamlDisplayer == null) continue;
                 xamlDisplayer.IsCodeDisplayed = newValue;
             }
+        }
+
+        #endregion
+
+        #region DisplayModeProperty
+
+
+        public XamlDisplayer.DisplayModeEnum DisplayMode {
+            get { return (XamlDisplayer.DisplayModeEnum)GetValue(DisplayModeProperty); }
+            set { SetValue(DisplayModeProperty , value); }
+        }
+
+        // Using a DependencyProperty as the backing store for DisplayMode.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty DisplayModeProperty =
+            DependencyProperty.Register("DisplayMode" , typeof(XamlDisplayer.DisplayModeEnum) , typeof(XamlDisplayerPanel) , new PropertyMetadata(XamlDisplayer.DisplayModeEnum.LeftRight, OnDisplayModePropertyChanged));
+
+        private static void OnDisplayModePropertyChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e) {
+            var d = dependencyObject as XamlDisplayerPanel;
+            var newValue = (XamlDisplayer.DisplayModeEnum)e.NewValue;
+            if (d == null) return;
+            foreach (var child in d.Children) {
+                var xamlDisplayer = child as XamlDisplayer;
+                if (xamlDisplayer == null) continue;
+                xamlDisplayer.DisplayMode = newValue;
+            }
+
         }
 
         #endregion

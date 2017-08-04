@@ -5,22 +5,25 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CodeDisplayer"             
              mc:Ignorable="d">
-    <Grid x:Name="Grid" HorizontalAlignment="Center">
+    <Grid x:Name="Grid" HorizontalAlignment="Center" Margin="0 12 0 0">
         <Grid.ColumnDefinitions>
             <ColumnDefinition SharedSizeGroup="Content" />
-            <ColumnDefinition SharedSizeGroup="XamlCode"/>
-            <ColumnDefinition SharedSizeGroup="CopyButton"></ColumnDefinition>
+            <ColumnDefinition SharedSizeGroup="ToggleButton"></ColumnDefinition>
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
         <Grid.Resources>
             <Style TargetType="Border">
                 <Setter Property="BorderThickness" Value="0.4"></Setter>
                 <Setter Property="BorderBrush" Value="LightGray"></Setter>
             </Style>
         </Grid.Resources>
-        <Border Grid.Column="0" Padding="20">
+        <Border x:Name="ContentArea" Grid.Column="0" Padding="10">
             <ContentPresenter x:Name="ContentPresenter" Margin="10" Content="{Binding Content}" />
         </Border>
-        <Border Background="WhiteSmoke" Grid.Column="1" MouseEnter="CodeArea_OnMouseEnter" MouseLeave="CodeArea_OnMouseLeave">
+        <Border x:Name="CodeArea" Background="WhiteSmoke" Grid.Column="0" Grid.Row="1" MouseEnter="CodeArea_OnMouseEnter" MouseLeave="CodeArea_OnMouseLeave">
             <local:MvvmTextEditor                 
                 WordWrap="True" 
                 x:Name="TextEditor" 
@@ -37,7 +40,7 @@
         <Button x:Name="CopyButton"     
                     HorizontalAlignment="Right"
                     VerticalAlignment="Bottom"
-                    Grid.Column="1"
+                    Grid.Row="1"
                     Visibility="Hidden"                                         
                     Width="70"
                     Height="30"                     
