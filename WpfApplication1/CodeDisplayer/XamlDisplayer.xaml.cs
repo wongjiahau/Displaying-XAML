@@ -25,11 +25,8 @@ namespace CodeDisplayer {
         private static void OnContentPropertyChanged(DependencyObject d , DependencyPropertyChangedEventArgs e) {
             var xamlDisplayer = d as XamlDisplayer;
             var content = e.NewValue as Control;
-            if (content != null) {
-                content.HorizontalAlignment = HorizontalAlignment.Center;   
-                content.VerticalAlignment = VerticalAlignment.Center;
-            }
-            if (xamlDisplayer != null) xamlDisplayer.ContentPresenter.Content = content;
+            if (xamlDisplayer==null || content == null) return;            
+            xamlDisplayer.ContentPresenter.Content = content;
         }
         #endregion
 
@@ -156,5 +153,19 @@ namespace CodeDisplayer {
         #endregion
 
 
+        private void XamlDisplayer_OnLoaded(object sender, RoutedEventArgs e) {
+            var c = this.Content as Control;
+            if (c == null) return;
+            c.HorizontalAlignment = HorizontalAlignment.Center;
+            c.VerticalAlignment = VerticalAlignment.Center;
+            if ((c as ContentControl) != null) return;
+            if (double.IsNaN(c.Width)) {
+                c.Width = 150;
+            }
+            if (double.IsNaN(c.ActualHeight)) {
+                c.Height = 150;
+            }
+
+        }
     }
 }

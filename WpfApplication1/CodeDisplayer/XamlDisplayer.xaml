@@ -4,43 +4,46 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CodeDisplayer"             
-             mc:Ignorable="d">
-    <Grid x:Name="Grid" HorizontalAlignment="Center" Margin="0 12 0 0">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition SharedSizeGroup="Content" />
-            <ColumnDefinition SharedSizeGroup="ToggleButton"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-        </Grid.RowDefinitions>
-        <Grid.Resources>
-            <Style TargetType="Border">
-                <Setter Property="BorderThickness" Value="0.4"></Setter>
-                <Setter Property="BorderBrush" Value="LightGray"></Setter>
-            </Style>
-        </Grid.Resources>
-        <Border x:Name="ContentArea" Grid.Column="0" Padding="10">
-            <ContentPresenter x:Name="ContentPresenter" Margin="10" Content="{Binding Content}" />
-        </Border>
-        <Border x:Name="CodeArea" Background="WhiteSmoke" Grid.Column="0" Grid.Row="1" MouseEnter="CodeArea_OnMouseEnter" MouseLeave="CodeArea_OnMouseLeave">
-            <local:MvvmTextEditor                 
-                WordWrap="True" 
+             mc:Ignorable="d" Loaded="XamlDisplayer_OnLoaded">
+    
+        <Grid x:Name="Grid" HorizontalAlignment="Center" Margin="0 12 0 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition SharedSizeGroup="Content" />
+                <ColumnDefinition SharedSizeGroup="ToggleButton"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="BorderThickness" Value="0.4"></Setter>
+                    <Setter Property="BorderBrush" Value="LightGray"></Setter>
+                </Style>
+            </Grid.Resources>
+            <Border x:Name="ContentArea" Grid.Column="0" Padding="10">
+                <ContentPresenter x:Name="ContentPresenter" MaxWidth="500" MinWidth="150" Margin="10" Content="{Binding Content}" />
+            </Border>
+            <Border x:Name="CodeArea"  Grid.Column="1" Grid.Row="0" Background="WhiteSmoke" MouseEnter="CodeArea_OnMouseEnter" MouseLeave="CodeArea_OnMouseLeave">
+                <local:MvvmTextEditor                 
+                WordWrap="False" 
                 x:Name="TextEditor" 
                 Margin="10" 
+                MaxWidth="500"
                 Background="{x:Null}"
                 SyntaxHighlighting="XML" 
-                VerticalScrollBarVisibility="Hidden" 
-                HorizontalScrollBarVisibility="Hidden" 
+                VerticalScrollBarVisibility="Auto" 
+                HorizontalScrollBarVisibility="Auto" 
                 HorizontalAlignment="Left" 
                 VerticalAlignment="Center" 
                 FontFamily="Consolas"                 
                 IsReadOnly="True"/>
-        </Border>
-        <Button x:Name="CopyButton"     
+            </Border>
+            <Button x:Name="CopyButton"     
                     HorizontalAlignment="Right"
                     VerticalAlignment="Bottom"
-                    Grid.Row="1"
+                    Grid.Row="0"
+                    Grid.Column="1"
                     Visibility="Hidden"                                         
                     Width="70"
                     Height="30"                     
@@ -48,10 +51,11 @@
                     Content="COPY"                       
                     Click="CopyButton_OnClicked" 
                     ToolTip="Copy code" />
-        <Popup x:Name="Popup" Placement="Mouse" PopupAnimation="Slide" AllowsTransparency="True">
-            <Border Background="Black" HorizontalAlignment="Center">
-                <TextBlock Foreground="White" FontWeight="Bold" Margin="10">Code is copied!</TextBlock>
-            </Border>
-        </Popup>
-    </Grid>
+            <Popup x:Name="Popup" Placement="Mouse" PopupAnimation="Slide" AllowsTransparency="True">
+                <Border Background="Black" HorizontalAlignment="Center">
+                    <TextBlock Foreground="White" FontWeight="Bold" Margin="10">Code is copied!</TextBlock>
+                </Border>
+            </Popup>
+        </Grid>
+    
 </UserControl>
