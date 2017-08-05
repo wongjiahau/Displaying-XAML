@@ -24,7 +24,7 @@ namespace CodeDisplayer {
             new FrameworkPropertyMetadata(default(object) , OnContentPropertyChanged));
         private static void OnContentPropertyChanged(DependencyObject d , DependencyPropertyChangedEventArgs e) {
             var xamlDisplayer = d as XamlDisplayer;
-            var content = e.NewValue as Control;
+            var content = e.NewValue as FrameworkElement;
             if (xamlDisplayer==null || content == null) return;            
             xamlDisplayer.ContentPresenter.Content = content;
         }
@@ -154,7 +154,7 @@ namespace CodeDisplayer {
 
 
         private void XamlDisplayer_OnLoaded(object sender, RoutedEventArgs e) {
-            var c = this.Content as Control;
+            var c = this.Content as FrameworkElement;            
             if (c == null) return;
             c.HorizontalAlignment = HorizontalAlignment.Center;
             c.VerticalAlignment = VerticalAlignment.Center;
