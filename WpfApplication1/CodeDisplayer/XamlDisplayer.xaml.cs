@@ -26,6 +26,10 @@ namespace CodeDisplayer {
         private static void OnContentPropertyChanged(DependencyObject d , DependencyPropertyChangedEventArgs e) {
             var xamlDisplayer = d as XamlDisplayer;
             var content = e.NewValue as Control;
+            if (content != null) {
+                content.HorizontalAlignment = HorizontalAlignment.Center;   
+                content.VerticalAlignment = VerticalAlignment.Center;
+            }
             if (xamlDisplayer != null) xamlDisplayer.ContentPresenter.Content = content;
         }
         #endregion
