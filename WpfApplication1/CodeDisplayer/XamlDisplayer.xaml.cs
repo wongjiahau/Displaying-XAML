@@ -13,7 +13,6 @@ namespace CodeDisplayer {
     public partial class XamlDisplayer : UserControl {
         public XamlDisplayer() {
             InitializeComponent();
-            CollapseCodeDisplayingArea();
         }
         #region  ContentProperty
         public new object Content {
@@ -73,14 +72,18 @@ namespace CodeDisplayer {
 
         private void CollapseCodeDisplayingArea() {
             var row = this.Grid.RowDefinitions[1];
-            if (row.ActualHeight == 0) return;
             row.Height = new GridLength(0);
+            var col = this.Grid.ColumnDefinitions[1];
+            col.Width = new GridLength(0);
         }
 
         private void ExpandCodeDisplaingArea() {
             var row = this.Grid.RowDefinitions[1];
             if (row.ActualHeight > 0) return;
             row.Height = new GridLength(0 , GridUnitType.Auto);
+            var col = this.Grid.ColumnDefinitions[1];
+            if (col.ActualWidth > 0) return;
+            col.Width = new GridLength(0 , GridUnitType.Auto);
         }
         #endregion
 
@@ -120,8 +123,8 @@ namespace CodeDisplayer {
 
 
         private void SwitchToLeftRightMode() {
-            Grid.SetRow(CodeArea, 0);
-            Grid.SetColumn(CodeArea,1);
+            Grid.SetRow(CodeArea , 0);
+            Grid.SetColumn(CodeArea , 1);
             Grid.SetRow(CopyButton , 0);
             Grid.SetColumn(CopyButton , 1);
 

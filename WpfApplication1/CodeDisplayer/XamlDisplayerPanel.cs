@@ -19,7 +19,7 @@ namespace CodeDisplayer {
 
         public void Initialize(XmlDocument xmlDocument) {
             WrapEachChildWithXamlDisplayer();
-            DisplayXamlCode(xmlDocument);
+            DisplayXamlCode(xmlDocument);            
         }
 
         private void DisplayXamlCode(XmlNode node) {
@@ -138,9 +138,7 @@ namespace CodeDisplayer {
                 if (xamlDisplayer == null) continue;
                 xamlDisplayer.DisplayMode = newValue;
             }
-
         }
-
         #endregion
     }
 
