@@ -8,7 +8,12 @@ namespace CodeDisplayer {
     public class MaterialDesignInXamlToolkitGitHubFile : GitHubFile {
         private const string RepositoryName = "MaterialDesignInXamlToolkit";
         private const string FolderPath = "MainDemo.Wpf";
-        public MaterialDesignInXamlToolkitGitHubFile(string ownerName, string branchName, string fileName)
-            : base(ownerName, RepositoryName, branchName, FolderPath, fileName) { }
+
+        public MaterialDesignInXamlToolkitGitHubFile(string typeName) : 
+            base("wongjiahau" , RepositoryName, "New-Demo-2", FolderPath, typeName + ".xaml") {
+
+        }
+        public MaterialDesignInXamlToolkitGitHubFile(string ownerName , string branchName , string fileName)
+            : base(ownerName , RepositoryName , branchName , FolderPath , fileName) { }
     }
 }
