@@ -21,14 +21,15 @@
                     <Setter Property="BorderBrush" Value="LightGray"></Setter>
                 </Style>
             </Grid.Resources>
-            <Border x:Name="ContentArea" Grid.Column="0" Padding="10">
-                <ContentPresenter x:Name="ContentPresenter" MaxWidth="500" MinWidth="150" Margin="10" Content="{Binding Content}" />
+            <Border x:Name="ContentArea" Loaded="ContentArea_OnLoaded" Grid.Column="0" Padding="10">
+                <ContentPresenter x:Name="ContentPresenter" MinWidth="150" Margin="10" Content="{Binding Content}" />
             </Border>
-            <Border x:Name="CodeArea"  Grid.Column="1" Grid.Row="0" Background="WhiteSmoke" MouseEnter="CodeArea_OnMouseEnter" MouseLeave="CodeArea_OnMouseLeave">
+            <Border x:Name="CodeArea" Grid.Column="1" Grid.Row="0" Background="WhiteSmoke" MouseEnter="CodeArea_OnMouseEnter" MouseLeave="CodeArea_OnMouseLeave">
                 <local:MvvmTextEditor                 
                 WordWrap="False" 
                 x:Name="TextEditor" 
                 Margin="10" 
+                MaxHeight="300"
                 MaxWidth="500"
                 Background="{x:Null}"
                 SyntaxHighlighting="XML" 

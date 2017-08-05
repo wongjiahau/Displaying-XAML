@@ -156,8 +156,12 @@ namespace CodeDisplayer {
             if (c == null) return;
             c.HorizontalAlignment = HorizontalAlignment.Center;
             c.VerticalAlignment = VerticalAlignment.Center;
-            if ((c as ContentControl) != null) return;
         }
         #endregion
+
+        private void ContentArea_OnLoaded(object sender , RoutedEventArgs e) {
+            if (ContentArea.ActualHeight > TextEditor.MaxHeight)
+                TextEditor.MaxHeight = ContentArea.ActualHeight;
+        }
     }
 }
