@@ -19,7 +19,9 @@ namespace CodeDisplayer {
 
         public void Initialize(XmlDocument xmlDocument) {
             WrapEachChildWithXamlDisplayer();
-            DisplayXamlCode(xmlDocument);            
+            DisplayXamlCode(xmlDocument);
+            OnDisplayModePropertyChanged(this , new DependencyPropertyChangedEventArgs(DisplayModeProperty , null , this.DisplayMode));
+            IsCodeDisplayedPropertyChanged(this , new DependencyPropertyChangedEventArgs(IsCodeDisplayedProperty , null , this.IsCodeDisplayed));
         }
 
         private void DisplayXamlCode(XmlNode node) {
@@ -127,9 +129,9 @@ namespace CodeDisplayer {
 
         // Using a DependencyProperty as the backing store for DisplayMode.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty DisplayModeProperty =
-            DependencyProperty.Register("DisplayMode" , typeof(XamlDisplayer.DisplayModeEnum) , typeof(XamlDisplayerPanel) , new PropertyMetadata(XamlDisplayer.DisplayModeEnum.LeftRight, OnDisplayModePropertyChanged));
+            DependencyProperty.Register("DisplayMode" , typeof(XamlDisplayer.DisplayModeEnum) , typeof(XamlDisplayerPanel) , new PropertyMetadata(XamlDisplayer.DisplayModeEnum.LeftRight , OnDisplayModePropertyChanged));
 
-        private static void OnDisplayModePropertyChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e) {
+        private static void OnDisplayModePropertyChanged(DependencyObject dependencyObject , DependencyPropertyChangedEventArgs e) {
             var d = dependencyObject as XamlDisplayerPanel;
             var newValue = (XamlDisplayer.DisplayModeEnum)e.NewValue;
             if (d == null) return;

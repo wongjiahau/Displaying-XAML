@@ -162,6 +162,8 @@ namespace CodeDisplayer {
         private void ContentArea_OnLoaded(object sender , RoutedEventArgs e) {
             if (ContentArea.ActualHeight > TextEditor.MaxHeight)
                 TextEditor.MaxHeight = ContentArea.ActualHeight;
+            if (ContentArea.ActualWidth > TextEditor.MaxWidth)
+                TextEditor.MaxWidth = ContentArea.ActualWidth;
         }
     }
 }
