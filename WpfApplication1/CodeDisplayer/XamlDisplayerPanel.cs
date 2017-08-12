@@ -13,9 +13,66 @@ namespace CodeDisplayer {
     public class XamlDisplayerPanel : StackPanel {
         public XamlDisplayerPanel() {
             Grid.SetIsSharedSizeScope(this , true);
+            this.Loaded += LoadXamlFile;
         }
-        
 
+        private void LoadXamlFile(object sender , RoutedEventArgs e) {
+            switch (_source) {
+                case Source.Remote:
+
+                    break;
+                case Source.Local:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        private static string DownloadFile(string sourceUrl) //https://gist.github.com/nboubakr/7812375
+        {
+
+            long existLen = 0;
+            var httpReq = (HttpWebRequest)WebRequest.Create(sourceUrl);
+            httpReq.AddRange((int)existLen);
+            var httpRes = (HttpWebResponse)httpReq.GetResponse();
+            var responseStream = httpRes.GetResponseStream();
+            if (responseStream == null) return "Fail to fetch file";
+            var streamReader = new StreamReader(responseStream);
+            return streamReader.ReadToEnd();
+        }
+
+
+        public enum Source { Remote, Local }
+
+        private static Source _source;
+        private static string _defaultLocalPath;
+        private static string _remotePath;
+        private static List<string> _attributesToBeRemoved;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="source">
+        /// Where to load the XAML. Either from remote(e.g. GitHub) or local machine
+        /// </param>
+        /// <param name="defaultLocalPath">
+        /// Where to load XAML file if source is defined as Local
+        /// E.g. C:\Users\User\Source\Repos\MyProject\Folder1
+        /// </param>
+        /// <param name="defaultRemotePath">
+        /// Where to load XAML file if source is defined as Remote
+        /// E.g. https://raw.githubusercontent.com/User/Repo/Branch/Folder/
+        /// </param>
+        /// <param name="attributesToBeRemoved">
+        /// List of attribues that you wish to hide from reader's sight
+        /// E.g. xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\ 
+        /// </param>
+        public static void Initialize(Source source, string defaultLocalPath , string defaultRemotePath , List<string> attributesToBeRemoved) {
+            _source = source;
+            _defaultLocalPath = defaultLocalPath;
+            _remotePath = defaultRemotePath;
+            _attributesToBeRemoved = attributesToBeRemoved;
+        }
 
 
 
