@@ -14,6 +14,8 @@ namespace CodeDisplayer {
         public XamlDisplayer() {
             InitializeComponent();
         }
+
+        #region DependencyProperties
         #region  ContentProperty
         public new object Content {
             get => GetValue(ContentProperty);
@@ -126,6 +128,8 @@ namespace CodeDisplayer {
             Grid.SetColumn(CopyButton , 1);
 
         }
+
+        #endregion
 
         #endregion
 

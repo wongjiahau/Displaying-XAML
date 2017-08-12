@@ -14,6 +14,8 @@ namespace CodeDisplayer {
         public XamlDisplayerPanel() {
             Grid.SetIsSharedSizeScope(this , true);
         }
+        
+
 
 
 
