@@ -58,7 +58,7 @@ namespace CodeDisplayer {
             return FindFisrtChildOfXamlDisplayerHost(this).GetType().Name + ".xaml";
             DependencyObject FindFisrtChildOfXamlDisplayerHost(DependencyObject child) {
                 var parent = LogicalTreeHelper.GetParent(child);
-                if (parent == null) return child;
+                if (parent == null || parent.GetType() == typeof(XamlDisplayerHost)) return child;
                 return FindFisrtChildOfXamlDisplayerHost(parent);
 
             }
@@ -86,6 +86,7 @@ namespace CodeDisplayer {
                 return result;
                 string RemoveIrrelaventAttributes(string input)
                 {
+                    if (_attributesToBeRemoved == null) return input;
                     string cleansed = input;
                     foreach (var s in _attributesToBeRemoved) {
                         cleansed = cleansed.Replace(s , "");
@@ -140,7 +141,7 @@ namespace CodeDisplayer {
         private static SourceEnum _defaultSource;
         private static string _defaultLocalPath;
         private static string _defaultRemotePath;
-        private static List<string> _attributesToBeRemoved;
+        private static List<string> _attributesToBeRemoved = new List<string>();
 
         /// <summary>
         /// This method configure how all XamlDisplayerPanel should load and display XAML code

@@ -4,8 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Navigation;
 
 namespace CodeDisplayer {
     public class XamlDisplayerHost : Frame{
+        public XamlDisplayerHost() {
+            this.NavigationUIVisibility = NavigationUIVisibility.Hidden;
+        }
     }
 }
