@@ -1,0 +1,46 @@
+﻿<UserControl x:Class="XamlDisplayerDemo.Page1"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:XamlDisplayerDemo"
+             xmlns:codeDisplayer="clr-namespace:CodeDisplayer;assembly=CodeDisplayer"
+             xmlns:displayXamlDemo="clr-namespace:DisplayXamlDemo"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <displayXamlDemo:BoolToDisplayModeConverter x:Key="Converter" />
+    </UserControl.Resources>
+        <Grid>
+            <Label HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10" FontWeight="Bold" FontSize="30">XamlDisplayer DEMO</Label>
+            <StackPanel Margin="10" HorizontalAlignment="Right">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Label>Display Code :</Label>
+                    <ToggleButton x:Name="IsCodeDisplayedToggleButton" IsChecked="True"></ToggleButton>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Label>Orientation :</Label>
+                    <ToggleButton x:Name="OrientationToggleButton"></ToggleButton>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                <codeDisplayer:XamlDisplayerPanel 
+                IsCodeDisplayed="{Binding ElementName=IsCodeDisplayedToggleButton, Path=IsChecked, Mode=TwoWay}"
+                DisplayMode="{Binding ElementName=OrientationToggleButton, Path=IsChecked, Converter={StaticResource Converter}}"
+                >
+                    <Label>This is a label</Label>
+                    <DatePicker
+                    Width="100"
+                    materialDesign:HintAssist.Hint="Pick Date"
+                    Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
+                    <TextBox Width="150" materialDesign:HintAssist.Hint="Floating Hint Textbox" 
+                         Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                    <Button Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}">
+                        <materialDesign:PackIcon Kind="Alarm" Height="24" Width="24" />
+                    </Button>
+
+                </codeDisplayer:XamlDisplayerPanel>
+            </StackPanel>
+        </Grid>
+</UserControl>

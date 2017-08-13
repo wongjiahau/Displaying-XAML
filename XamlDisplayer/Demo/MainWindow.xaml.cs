@@ -8,6 +8,7 @@ using System.Windows.Media;
 using System.Xml;
 using CodeDisplayer;
 using System.Windows.Data;
+using XamlDisplayerDemo;
 
 //https://stackoverflow.com/questions/32690299/looping-through-all-nodes-in-xml-file-with-c-sharp\
 //https://github.com/Xavalon/XamlStyler
@@ -33,6 +34,7 @@ namespace DisplayXamlDemo {
                         "xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\""
                     }
                 );
+            XamlDisplayerHost.Navigate(new Page1());
         }
     }
 
