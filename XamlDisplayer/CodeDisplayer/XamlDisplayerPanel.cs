@@ -38,18 +38,30 @@ namespace CodeDisplayer {
                 WrapEachChildWithXamlDisplayer();
                 DisplayXamlCode(xmlDocument);
             }
-            catch {
-                // ignored for Visual Studio Designer
+            catch (Exception ex) {
+                MessageBox.Show(ex.Message);
             }
             OnDisplayModePropertyChanged(this , new DependencyPropertyChangedEventArgs(DisplayModeProperty , null , this.DisplayMode));
             IsCodeDisplayedPropertyChanged(this , new DependencyPropertyChangedEventArgs(IsCodeDisplayedProperty , null , this.IsCodeDisplayed));
         }
 
         private void CheckIfInitialized() {
-            if (SourceFileName == null) throw new Exception("SourceFileName must be defined. E.g. MainWindow.xaml");
+            if (SourceFileName == null) {
+                SourceFileName = SearchForSourceFileName();
+            }
             if (Source == SourceEnum.Null) Source = _defaultSource;
             LocalPath = LocalPath ?? _defaultLocalPath;
             RemotePath = RemotePath ?? _defaultRemotePath;
+        }
+
+        private string SearchForSourceFileName() {
+            return FindFisrtChildOfXamlDisplayerHost(this).GetType().Name + ".xaml";
+            DependencyObject FindFisrtChildOfXamlDisplayerHost(DependencyObject child) {
+                var parent = LogicalTreeHelper.GetParent(child);
+                if (parent == null) return child;
+                return FindFisrtChildOfXamlDisplayerHost(parent);
+
+            }
         }
 
         private void DisplayXamlCode(XmlNode node) {
