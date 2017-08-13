@@ -22,9 +22,9 @@ namespace DisplayXamlDemo {
                 source:
                     XamlDisplayerPanel.SourceEnum.LoadFromLocal,
                 defaultLocalPath:
-                    @"C:\Users\User\Source\Repos\Displaying-XAML\WpfApplication1\WpfApplication1\" ,
+                    @"C:\Users\User\Source\Repos\Displaying-XAML\XamlDisplayer\Demo\" ,
                 defaultRemotePath:
-                    "https://raw.githubusercontent.com/wongjiahau/Displaying-XAML/master/WpfApplication1/WpfApplication1/" ,
+                    "https://raw.githubusercontent.com/wongjiahau/Displaying-XAML/master/XamlDisplayer/Demo/" ,
                 attributesToBeRemoved:
                     new List<string>()
                     {

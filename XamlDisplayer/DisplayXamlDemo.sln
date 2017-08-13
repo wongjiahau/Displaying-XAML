@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26430.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamlDisplayerDemo", "WpfApplication1\XamlDisplayerDemo.csproj", "{2F111882-6FA5-4FE8-8826-766EB33118F2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamlDisplayerDemo", "Demo\XamlDisplayerDemo.csproj", "{2F111882-6FA5-4FE8-8826-766EB33118F2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeDisplayer", "CodeDisplayer\CodeDisplayer.csproj", "{AB0ACA42-1C9F-4823-A8C9-4594C5B70F4E}"
 EndProject
