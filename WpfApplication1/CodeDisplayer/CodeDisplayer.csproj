@@ -62,6 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GitHubFile.cs" />
+    <Compile Include="Helper.cs" />
     <Compile Include="MaterialDesignInXamlToolkitGitHubFile.cs" />
     <Compile Include="MvvmTextEditor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

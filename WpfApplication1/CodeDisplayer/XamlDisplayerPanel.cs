@@ -28,20 +28,6 @@ namespace CodeDisplayer {
             }
         }
 
-        private static string DownloadFile(string sourceUrl) //https://gist.github.com/nboubakr/7812375
-        {
-
-            long existLen = 0;
-            var httpReq = (HttpWebRequest)WebRequest.Create(sourceUrl);
-            httpReq.AddRange((int)existLen);
-            var httpRes = (HttpWebResponse)httpReq.GetResponse();
-            var responseStream = httpRes.GetResponseStream();
-            if (responseStream == null) return "Fail to fetch file";
-            var streamReader = new StreamReader(responseStream);
-            return streamReader.ReadToEnd();
-        }
-
-
         public enum Source { Remote, Local }
 
         private static Source _source;
@@ -50,7 +36,7 @@ namespace CodeDisplayer {
         private static List<string> _attributesToBeRemoved;
 
         /// <summary>
-        /// 
+        /// This method configure how all XamlDisplayerPanel should load and display XAML code
         /// </summary>
         /// <param name="source">
         /// Where to load the XAML. Either from remote(e.g. GitHub) or local machine
@@ -73,8 +59,6 @@ namespace CodeDisplayer {
             _remotePath = defaultRemotePath;
             _attributesToBeRemoved = attributesToBeRemoved;
         }
-
-
 
         public void Initialize(XmlDocument xmlDocument) {
             WrapEachChildWithXamlDisplayer();
