@@ -80,6 +80,7 @@
     <Compile Include="XamlDisplayer.xaml.cs">
       <DependentUpon>XamlDisplayer.xaml</DependentUpon>
     </Compile>
+    <Compile Include="XamlDisplayerHost.cs" />
     <Compile Include="XamlDisplayerPanel.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
