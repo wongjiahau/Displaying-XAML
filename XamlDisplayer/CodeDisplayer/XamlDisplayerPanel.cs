@@ -43,6 +43,7 @@ namespace CodeDisplayer {
             }
             OnDisplayModePropertyChanged(this , new DependencyPropertyChangedEventArgs(DisplayModeProperty , null , this.DisplayMode));
             IsCodeDisplayedPropertyChanged(this , new DependencyPropertyChangedEventArgs(IsCodeDisplayedProperty , null , this.IsCodeDisplayed));
+            this.Loaded -= LoadXamlFile;
         }
 
         private void CheckIfInitialized() {
