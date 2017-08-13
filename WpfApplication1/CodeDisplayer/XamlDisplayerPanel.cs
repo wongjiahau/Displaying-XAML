@@ -11,28 +11,44 @@ using Xavalon.XamlStyler.Core.Options;
 
 namespace CodeDisplayer {
     public class XamlDisplayerPanel : StackPanel {
+        public SourceEnum Source = SourceEnum.Null;
+        public string LocalPath = null;
+        public string RemotePath = null;
+        public string SourceFileName = null;
+
         public XamlDisplayerPanel() {
+            if(SourceFileName == null) throw new Exception("SourceFileName must be defined. E.g. MainWindow.xaml");
+            if (Source == SourceEnum.Null) Source = _defaultSource;
+            LocalPath = LocalPath ?? _defaultLocalPath;
+            RemotePath = RemotePath ?? _defaultRemotePath;
+
             Grid.SetIsSharedSizeScope(this , true);
             this.Loaded += LoadXamlFile;
         }
 
         private void LoadXamlFile(object sender , RoutedEventArgs e) {
-            switch (_source) {
-                case Source.Remote:
-
+            var xmlDocument = new XmlDocument();
+            switch (_defaultSource) {
+                case SourceEnum.Remote:
+                    xmlDocument.LoadXml(Helper.DownloadFile(RemotePath + SourceFileName));
                     break;
-                case Source.Local:
+                case SourceEnum.Local:
+                    xmlDocument.LoadXml(File.ReadAllText(LocalPath + SourceFileName));
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+            WrapEachChildWithXamlDisplayer();
+            DisplayXamlCode(xmlDocument);
+            OnDisplayModePropertyChanged(this , new DependencyPropertyChangedEventArgs(DisplayModeProperty , null , this.DisplayMode));
+            IsCodeDisplayedPropertyChanged(this , new DependencyPropertyChangedEventArgs(IsCodeDisplayedProperty , null , this.IsCodeDisplayed));
         }
 
-        public enum Source { Remote, Local }
-
-        private static Source _source;
+        #region Initializer
+        public enum SourceEnum { Remote, Local, Null }
+        private static SourceEnum _defaultSource;
         private static string _defaultLocalPath;
-        private static string _remotePath;
+        private static string _defaultRemotePath;
         private static List<string> _attributesToBeRemoved;
 
         /// <summary>
@@ -53,12 +69,13 @@ namespace CodeDisplayer {
         /// List of attribues that you wish to hide from reader's sight
         /// E.g. xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\ 
         /// </param>
-        public static void Initialize(Source source, string defaultLocalPath , string defaultRemotePath , List<string> attributesToBeRemoved) {
-            _source = source;
+        public static void Initialize(SourceEnum source , string defaultLocalPath , string defaultRemotePath , List<string> attributesToBeRemoved) {
+            _defaultSource = source;
             _defaultLocalPath = defaultLocalPath;
-            _remotePath = defaultRemotePath;
+            _defaultRemotePath = defaultRemotePath;
             _attributesToBeRemoved = attributesToBeRemoved;
         }
+        #endregion
 
         public void Initialize(XmlDocument xmlDocument) {
             WrapEachChildWithXamlDisplayer();
@@ -139,6 +156,7 @@ namespace CodeDisplayer {
             }
         }
 
+        #region DependencyProperties
         #region  IsCodeDisplayedProperty
         public bool IsCodeDisplayed {
             get { return (bool)GetValue(IsCodeDisplayedProperty); }
@@ -185,6 +203,6 @@ namespace CodeDisplayer {
             }
         }
         #endregion
+        #endregion
     }
-
 }
