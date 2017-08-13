@@ -11,28 +11,24 @@ using Xavalon.XamlStyler.Core.Options;
 
 namespace CodeDisplayer {
     public class XamlDisplayerPanel : StackPanel {
-        public SourceEnum Source = SourceEnum.Null;
-        public string LocalPath = null;
-        public string RemotePath = null;
-        public string SourceFileName = null;
+        public SourceEnum Source { get; set; }= SourceEnum.Null;
+        public string LocalPath { get; set; }= null;
+        public string RemotePath { get; set; }= null;
+        public string SourceFileName { get; set; }= null;
 
         public XamlDisplayerPanel() {
-            if(SourceFileName == null) throw new Exception("SourceFileName must be defined. E.g. MainWindow.xaml");
-            if (Source == SourceEnum.Null) Source = _defaultSource;
-            LocalPath = LocalPath ?? _defaultLocalPath;
-            RemotePath = RemotePath ?? _defaultRemotePath;
-
             Grid.SetIsSharedSizeScope(this , true);
             this.Loaded += LoadXamlFile;
         }
 
         private void LoadXamlFile(object sender , RoutedEventArgs e) {
+            CheckIfInitialized();
             var xmlDocument = new XmlDocument();
             switch (_defaultSource) {
-                case SourceEnum.Remote:
+                case SourceEnum.LoadFromRemote:
                     xmlDocument.LoadXml(Helper.DownloadFile(RemotePath + SourceFileName));
                     break;
-                case SourceEnum.Local:
+                case SourceEnum.LoadFromLocal:
                     xmlDocument.LoadXml(File.ReadAllText(LocalPath + SourceFileName));
                     break;
                 default:
@@ -44,8 +40,87 @@ namespace CodeDisplayer {
             IsCodeDisplayedPropertyChanged(this , new DependencyPropertyChangedEventArgs(IsCodeDisplayedProperty , null , this.IsCodeDisplayed));
         }
 
+        private void CheckIfInitialized() {
+            if(SourceFileName == null) throw new Exception("SourceFileName must be defined. E.g. MainWindow.xaml");
+            if (Source == SourceEnum.Null) Source = _defaultSource;
+            LocalPath = LocalPath ?? _defaultLocalPath;
+            RemotePath = RemotePath ?? _defaultRemotePath;
+        }
+
+        private void DisplayXamlCode(XmlNode node) {
+            if (node.LocalName.Contains(nameof(XamlDisplayerPanel))) {
+                for (var i = 0 ; i < node.ChildNodes.Count ; i++) {
+                    XmlNode child = node.ChildNodes[i];
+                    string xamlToBeDisplayed = Beautify(child.OuterXml);
+                    _xamlDisplayers[i].CodeToBeDisplayed = xamlToBeDisplayed;
+                }
+            }
+            else if (node.HasChildNodes) {
+                foreach (XmlNode child in node.ChildNodes) {
+                    DisplayXamlCode(child);
+                }
+            }
+            string Beautify(string fullXaml)
+            {
+                var styler = new StylerService(new StylerOptions() { IndentWithTabs = true });
+                string result = styler.StyleDocument(fullXaml);
+                result = RemoveIrrelaventAttributes(result);
+                result = RemoveEmptyLines(result);
+                return result;
+                string RemoveIrrelaventAttributes(string input) {
+                    string cleansed = input;
+                    foreach (var s in _attributesToBeRemoved) {
+                        cleansed = cleansed.Replace(s,"");
+                    }
+                    return cleansed;
+                    return input
+                    ;
+                }
+
+                string RemoveEmptyLines(string xaml)
+                {
+                    var sb = new StringBuilder(xaml.Length);
+                    char previousChar = '\0';
+                    for (int i = 0 ; i < xaml.Length ; i++) {
+                        char currentChar = xaml[i];
+                        if (currentChar == '\r' && previousChar == '\n') {
+                            //skip \r,\n,\t
+                            while (i + 1 < xaml.Length &&
+                                   (xaml[i + 1] == '\r' ||
+                                    xaml[i + 1] == '\n' ||
+                                    xaml[i + 1] == '\t')) {
+                                i++;
+                            }
+                        }
+                        else {
+                            sb.Append(currentChar);
+                        }
+                        if (currentChar != ' ' && currentChar != '\t') previousChar = currentChar;
+                    }
+                    return sb.ToString();
+                }
+            }
+        }
+        private List<XamlDisplayer> _xamlDisplayers;
+        private void WrapEachChildWithXamlDisplayer() {
+            _xamlDisplayers = new List<XamlDisplayer>();
+            var newChildren = new List<UIElement>();
+            while (this.Children.Count > 0) {
+                var child = Children[0];
+                this.Children.Remove(child);
+                newChildren.Add(child);
+            }
+            foreach (var child in newChildren) {
+                var xamlDisplayer = new XamlDisplayer() {
+                    Content = child
+                };
+                this.Children.Add(xamlDisplayer);
+                _xamlDisplayers.Add(xamlDisplayer);
+            }
+        }
+        
         #region Initializer
-        public enum SourceEnum { Remote, Local, Null }
+        public enum SourceEnum { LoadFromRemote, LoadFromLocal, Null }
         private static SourceEnum _defaultSource;
         private static string _defaultLocalPath;
         private static string _defaultRemotePath;
@@ -76,85 +151,6 @@ namespace CodeDisplayer {
             _attributesToBeRemoved = attributesToBeRemoved;
         }
         #endregion
-
-        public void Initialize(XmlDocument xmlDocument) {
-            WrapEachChildWithXamlDisplayer();
-            DisplayXamlCode(xmlDocument);
-            OnDisplayModePropertyChanged(this , new DependencyPropertyChangedEventArgs(DisplayModeProperty , null , this.DisplayMode));
-            IsCodeDisplayedPropertyChanged(this , new DependencyPropertyChangedEventArgs(IsCodeDisplayedProperty , null , this.IsCodeDisplayed));
-        }
-
-        private void DisplayXamlCode(XmlNode node) {
-            if (node.LocalName.Contains(nameof(XamlDisplayerPanel))) {
-                for (var i = 0 ; i < node.ChildNodes.Count ; i++) {
-                    XmlNode child = node.ChildNodes[i];
-                    string xamlToBeDisplayed = Beautify(child.OuterXml);
-                    _xamlDisplayers[i].CodeToBeDisplayed = xamlToBeDisplayed;
-                }
-            }
-            else if (node.HasChildNodes) {
-                foreach (XmlNode child in node.ChildNodes) {
-                    DisplayXamlCode(child);
-                }
-            }
-            string Beautify(string fullXaml)
-            {
-                var styler = new StylerService(new StylerOptions() { IndentWithTabs = true });
-                string result = styler.StyleDocument(fullXaml);
-                result = RemoveIrrelaventAttributes(result);
-                result = RemoveEmptyLines(result);
-                return result;
-                string RemoveIrrelaventAttributes(string xaml)
-                {
-                    return xaml
-                        .Replace("xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\"" , "")
-                        .Replace("xmlns:materialDesign=\"http://materialdesigninxaml.net/winfx/xaml/themes\"" , "")
-                        .Replace("xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\"" , "");
-                    ;
-                }
-
-                string RemoveEmptyLines(string xaml)
-                {
-                    var sb = new StringBuilder(xaml.Length);
-                    char previousChar = '\0';
-                    for (int i = 0 ; i < xaml.Length ; i++) {
-                        char currentChar = xaml[i];
-                        if (currentChar == '\r' && previousChar == '\n') {
-                            //skip \r,\n,\t
-                            while (i + 1 < xaml.Length &&
-                                   (xaml[i + 1] == '\r' ||
-                                    xaml[i + 1] == '\n' ||
-                                    xaml[i + 1] == '\t')) {
-                                i++;
-                            }
-                        }
-                        else {
-                            sb.Append(currentChar);
-                        }
-                        if (currentChar != ' ' && currentChar != '\t') previousChar = currentChar;
-                    }
-                    return sb.ToString();
-                }
-            }
-        }
-
-        private List<XamlDisplayer> _xamlDisplayers;
-        private void WrapEachChildWithXamlDisplayer() {
-            _xamlDisplayers = new List<XamlDisplayer>();
-            var newChildren = new List<UIElement>();
-            while (this.Children.Count > 0) {
-                var child = Children[0];
-                this.Children.Remove(child);
-                newChildren.Add(child);
-            }
-            foreach (var child in newChildren) {
-                var xamlDisplayer = new XamlDisplayer() {
-                    Content = child
-                };
-                this.Children.Add(xamlDisplayer);
-                _xamlDisplayers.Add(xamlDisplayer);
-            }
-        }
 
         #region DependencyProperties
         #region  IsCodeDisplayedProperty

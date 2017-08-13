@@ -10,7 +10,7 @@
     <ScrollViewer VerticalAlignment="Stretch" VerticalContentAlignment="Center">
         <StackPanel VerticalAlignment="Center">
             <ToggleButton x:Name="ToggleButton"></ToggleButton>
-            <codeDisplayer:XamlDisplayerPanel IsCodeDisplayed="{Binding ElementName=ToggleButton, Path=IsChecked, Mode=TwoWay}" x:Name="XamlDisplayerPanel">
+            <codeDisplayer:XamlDisplayerPanel SourceFileName="MainWindow.xaml"  IsCodeDisplayed="{Binding ElementName=ToggleButton, Path=IsChecked, Mode=TwoWay}" x:Name="XamlDisplayerPanel">
                 <Label>testing</Label>
                 <Label>testing</Label>
                 <TextBox Width="150" materialDesign:HintAssist.Hint="Floating Hint Textbox" 
