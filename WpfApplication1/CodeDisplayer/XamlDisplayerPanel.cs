@@ -11,10 +11,10 @@ using Xavalon.XamlStyler.Core.Options;
 
 namespace CodeDisplayer {
     public class XamlDisplayerPanel : StackPanel {
-        public SourceEnum Source { get; set; }= SourceEnum.Null;
-        public string LocalPath { get; set; }= null;
-        public string RemotePath { get; set; }= null;
-        public string SourceFileName { get; set; }= null;
+        public SourceEnum Source { get; set; } = SourceEnum.Null;
+        public string LocalPath { get; set; } = null;
+        public string RemotePath { get; set; } = null;
+        public string SourceFileName { get; set; } = null;
 
         public XamlDisplayerPanel() {
             Grid.SetIsSharedSizeScope(this , true);
@@ -23,25 +23,30 @@ namespace CodeDisplayer {
 
         private void LoadXamlFile(object sender , RoutedEventArgs e) {
             CheckIfInitialized();
-            var xmlDocument = new XmlDocument();
-            switch (_defaultSource) {
-                case SourceEnum.LoadFromRemote:
-                    xmlDocument.LoadXml(Helper.DownloadFile(RemotePath + SourceFileName));
-                    break;
-                case SourceEnum.LoadFromLocal:
-                    xmlDocument.LoadXml(File.ReadAllText(LocalPath + SourceFileName));
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
+            try {
+                var xmlDocument = new XmlDocument();
+                switch (_defaultSource) {
+                    case SourceEnum.LoadFromRemote:
+                        xmlDocument.LoadXml(Helper.DownloadFile(RemotePath + SourceFileName));
+                        break;
+                    case SourceEnum.LoadFromLocal:
+                        xmlDocument.LoadXml(File.ReadAllText(LocalPath + SourceFileName));
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+                WrapEachChildWithXamlDisplayer();
+                DisplayXamlCode(xmlDocument);
             }
-            WrapEachChildWithXamlDisplayer();
-            DisplayXamlCode(xmlDocument);
+            catch {
+                // ignored for Visual Studio Designer
+            }
             OnDisplayModePropertyChanged(this , new DependencyPropertyChangedEventArgs(DisplayModeProperty , null , this.DisplayMode));
             IsCodeDisplayedPropertyChanged(this , new DependencyPropertyChangedEventArgs(IsCodeDisplayedProperty , null , this.IsCodeDisplayed));
         }
 
         private void CheckIfInitialized() {
-            if(SourceFileName == null) throw new Exception("SourceFileName must be defined. E.g. MainWindow.xaml");
+            if (SourceFileName == null) throw new Exception("SourceFileName must be defined. E.g. MainWindow.xaml");
             if (Source == SourceEnum.Null) Source = _defaultSource;
             LocalPath = LocalPath ?? _defaultLocalPath;
             RemotePath = RemotePath ?? _defaultRemotePath;
@@ -67,14 +72,13 @@ namespace CodeDisplayer {
                 result = RemoveIrrelaventAttributes(result);
                 result = RemoveEmptyLines(result);
                 return result;
-                string RemoveIrrelaventAttributes(string input) {
+                string RemoveIrrelaventAttributes(string input)
+                {
                     string cleansed = input;
                     foreach (var s in _attributesToBeRemoved) {
-                        cleansed = cleansed.Replace(s,"");
+                        cleansed = cleansed.Replace(s , "");
                     }
                     return cleansed;
-                    return input
-                    ;
                 }
 
                 string RemoveEmptyLines(string xaml)
@@ -118,7 +122,7 @@ namespace CodeDisplayer {
                 _xamlDisplayers.Add(xamlDisplayer);
             }
         }
-        
+
         #region Initializer
         public enum SourceEnum { LoadFromRemote, LoadFromLocal, Null }
         private static SourceEnum _defaultSource;
