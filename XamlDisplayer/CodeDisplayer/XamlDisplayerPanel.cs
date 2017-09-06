@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq.Expressions;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,8 +33,8 @@ namespace CodeDisplayer {
         private void LoadControlPanel() {
             var controlPanel = new ControlPanel() { DataContext = this };
             BindingOperations.SetBinding(this , IsCodeDisplayedProperty , new Binding() { Source = controlPanel.IsCodeDisplayedToggleButton , Path = new PropertyPath("IsChecked") });
-            BindingOperations.SetBinding(this , DisplayModeProperty, new Binding() { Source = controlPanel.OrientationToggleButton , Path = new PropertyPath("IsChecked") , Converter = new BoolToDisplayModeConverter() });
-            BindingOperations.SetBinding(this , SearchedTextProperty, new Binding() { Source = controlPanel.SearchBox, Path = new PropertyPath("Text")});
+            BindingOperations.SetBinding(this , DisplayModeProperty , new Binding() { Source = controlPanel.OrientationToggleButton , Path = new PropertyPath("IsChecked") , Converter = new BoolToDisplayModeConverter() });
+            BindingOperations.SetBinding(this , SearchedTextProperty , new Binding() { Source = controlPanel.SearchBox , Path = new PropertyPath("Text") });
             this.Children.Insert(0 , controlPanel);
         }
 
@@ -42,15 +43,13 @@ namespace CodeDisplayer {
             CheckIfInitialized();
             LoadingScreen.Display("Loading source file : " + SourceFileName + " . . .");
             await Task.Run(() => {
-                try {
-                    switch (_defaultSource) {
-                        case SourceEnum.LoadFromRemote:
-                            xmlDocument.LoadXml(Helper.DownloadFile(RemotePath + SourceFileName)); break;
-                        case SourceEnum.LoadFromLocal:
-                            xmlDocument.LoadXml(File.ReadAllText(LocalPath + SourceFileName)); break;
-                    }
-                }
-                catch (Exception ex) { MessageBox.Show(ex.Message); }
+                switch (_defaultSource) {
+                    case SourceEnum.LoadFromRemote:
+                        try { xmlDocument.LoadXml(Helper.DownloadFile(RemotePath + SourceFileName)); }
+                        catch (Exception ex) { MessageBox.Show(ex.Message + "\nCannot load file from " + RemotePath + SourceFileName); } break;
+                    case SourceEnum.LoadFromLocal:
+                        try { xmlDocument.LoadXml(File.ReadAllText(LocalPath + SourceFileName));  }
+                        catch (Exception ex) { MessageBox.Show(ex.Message + "\nCannot load file from " + LocalPath + SourceFileName); } break;  }
             });
             LoadingScreen.CloseDialog();
             WrapEachChildWithXamlDisplayer();
