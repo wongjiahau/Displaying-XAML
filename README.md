@@ -1,4 +1,4 @@
-/# Displaying-XAML
+# Displaying-XAML
 This library is for display the XAML code of theme library for WPF (e.g. MaterialDesignInXamlToolkit/MahApps)
 
 ## Why is this library written ?
