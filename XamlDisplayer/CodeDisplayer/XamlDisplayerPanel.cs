@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Data;
 using System.Xml;
 using Xavalon.XamlStyler.Core;
 using Xavalon.XamlStyler.Core.Options;
@@ -19,10 +21,23 @@ namespace CodeDisplayer {
 
         public XamlDisplayerPanel() {
             Grid.SetIsSharedSizeScope(this , true);
-            this.Loaded += LoadXamlFile;
+            this.Loaded += XamlDisplayerPanel_Loaded;
         }
 
-        private async void LoadXamlFile(object sender , RoutedEventArgs e) {
+        private void XamlDisplayerPanel_Loaded(object sender , RoutedEventArgs e) {
+            LoadXamlFile();
+            this.Loaded -= XamlDisplayerPanel_Loaded;
+        }
+
+        private void LoadControlPanel() {
+            var controlPanel = new ControlPanel() { DataContext = this };
+            BindingOperations.SetBinding(this , IsCodeDisplayedProperty , new Binding() { Source = controlPanel.IsCodeDisplayedToggleButton , Path = new PropertyPath("IsChecked") });
+            BindingOperations.SetBinding(this , DisplayModeProperty, new Binding() { Source = controlPanel.OrientationToggleButton , Path = new PropertyPath("IsChecked") , Converter = new BoolToDisplayModeConverter() });
+            BindingOperations.SetBinding(this , SearchedTextProperty, new Binding() { Source = controlPanel.SearchBox, Path = new PropertyPath("Text")});
+            this.Children.Insert(0 , controlPanel);
+        }
+
+        private async void LoadXamlFile() {
             var xmlDocument = new XmlDocument();
             CheckIfInitialized();
             LoadingScreen.Display("Loading source file : " + SourceFileName + " . . .");
@@ -42,7 +57,7 @@ namespace CodeDisplayer {
             DisplayXamlCode(xmlDocument);
             OnDisplayModePropertyChanged(this , new DependencyPropertyChangedEventArgs(DisplayModeProperty , null , this.DisplayMode));
             IsCodeDisplayedPropertyChanged(this , new DependencyPropertyChangedEventArgs(IsCodeDisplayedProperty , null , this.IsCodeDisplayed));
-            this.Loaded -= LoadXamlFile;
+            LoadControlPanel();
         }
 
         private void CheckIfInitialized() {

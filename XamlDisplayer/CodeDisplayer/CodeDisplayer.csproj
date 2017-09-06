@@ -61,6 +61,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BoolToDisplayModeConverter.cs" />
+    <Compile Include="ControlPanel.xaml.cs">
+      <DependentUpon>ControlPanel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Helper.cs" />
     <Compile Include="LoadingScreen.xaml.cs">
       <DependentUpon>LoadingScreen.xaml</DependentUpon>
@@ -95,6 +99,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="ControlPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="LoadingScreen.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -106,6 +114,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="FodyWeavers.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Converters\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.2.0.0\build\dotnet\Fody.targets" Condition="Exists('..\packages\Fody.2.0.0\build\dotnet\Fody.targets')" />

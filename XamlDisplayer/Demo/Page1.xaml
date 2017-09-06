@@ -12,35 +12,23 @@
     <UserControl.Resources>
         <displayXamlDemo:BoolToDisplayModeConverter x:Key="Converter" />
     </UserControl.Resources>
-        <Grid>
-            <Label HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10" FontWeight="Bold" FontSize="30">XamlDisplayer DEMO</Label>
-            <StackPanel Margin="10" HorizontalAlignment="Right">
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <Label>Display Code :</Label>
-                    <ToggleButton x:Name="IsCodeDisplayedToggleButton" IsChecked="True"></ToggleButton>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <Label>Orientation :</Label>
-                    <ToggleButton x:Name="OrientationToggleButton"></ToggleButton>
-                </StackPanel>
-            </StackPanel>
-            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                <codeDisplayer:XamlDisplayerPanel 
-                IsCodeDisplayed="{Binding ElementName=IsCodeDisplayedToggleButton, Path=IsChecked, Mode=TwoWay}"
-                DisplayMode="{Binding ElementName=OrientationToggleButton, Path=IsChecked, Converter={StaticResource Converter}}"
-                >
-                    <Label>This is a label</Label>
-                    <DatePicker
+    <Grid>
+        <Label HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10" FontWeight="Bold" FontSize="30">XamlDisplayer DEMO</Label>
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+            <codeDisplayer:XamlDisplayerPanel >
+                <Label>This is a label</Label>
+                <DatePicker
                     Width="100"
                     materialDesign:HintAssist.Hint="Pick Date"
                     Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
-                    <TextBox Width="150" materialDesign:HintAssist.Hint="Floating Hint Textbox" 
+                <TextBox Width="150" materialDesign:HintAssist.Hint="Floating Hint Textbox" 
                          Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
-                    <Button Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}">
-                        <materialDesign:PackIcon Kind="Alarm" Height="24" Width="24" />
-                    </Button>
+                <Button Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}">
+                    <materialDesign:PackIcon Kind="Alarm" Height="24" Width="24" />
+                </Button>
 
-                </codeDisplayer:XamlDisplayerPanel>
-            </StackPanel>
-        </Grid>
+            </codeDisplayer:XamlDisplayerPanel>
+        </StackPanel>
+    </Grid>
 </UserControl>
+
