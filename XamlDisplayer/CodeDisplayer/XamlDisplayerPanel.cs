@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Xml;
@@ -21,26 +22,24 @@ namespace CodeDisplayer {
             this.Loaded += LoadXamlFile;
         }
 
-        private void LoadXamlFile(object sender , RoutedEventArgs e) {
+        private async void LoadXamlFile(object sender , RoutedEventArgs e) {
+            var xmlDocument = new XmlDocument();
             CheckIfInitialized();
-            try {
-                var xmlDocument = new XmlDocument();
-                switch (_defaultSource) {
-                    case SourceEnum.LoadFromRemote:
-                        xmlDocument.LoadXml(Helper.DownloadFile(RemotePath + SourceFileName));
-                        break;
-                    case SourceEnum.LoadFromLocal:
-                        xmlDocument.LoadXml(File.ReadAllText(LocalPath + SourceFileName));
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
+            LoadingScreen.Display("Loading source file : " + SourceFileName + " . . .");
+            await Task.Run(() => {
+                try {
+                    switch (_defaultSource) {
+                        case SourceEnum.LoadFromRemote:
+                            xmlDocument.LoadXml(Helper.DownloadFile(RemotePath + SourceFileName)); break;
+                        case SourceEnum.LoadFromLocal:
+                            xmlDocument.LoadXml(File.ReadAllText(LocalPath + SourceFileName)); break;
+                    }
                 }
-                WrapEachChildWithXamlDisplayer();
-                DisplayXamlCode(xmlDocument);
-            }
-            catch (Exception ex) {
-                MessageBox.Show(ex.Message);
-            }
+                catch (Exception ex) { MessageBox.Show(ex.Message); }
+            });
+            LoadingScreen.CloseDialog();
+            WrapEachChildWithXamlDisplayer();
+            DisplayXamlCode(xmlDocument);
             OnDisplayModePropertyChanged(this , new DependencyPropertyChangedEventArgs(DisplayModeProperty , null , this.DisplayMode));
             IsCodeDisplayedPropertyChanged(this , new DependencyPropertyChangedEventArgs(IsCodeDisplayedProperty , null , this.IsCodeDisplayed));
             this.Loaded -= LoadXamlFile;
@@ -57,7 +56,8 @@ namespace CodeDisplayer {
 
         private string SearchForSourceFileName() {
             return FindFisrtChildOfXamlDisplayerHost(this).GetType().Name + ".xaml";
-            DependencyObject FindFisrtChildOfXamlDisplayerHost(DependencyObject child) {
+            DependencyObject FindFisrtChildOfXamlDisplayerHost(DependencyObject child)
+            {
                 var parent = LogicalTreeHelper.GetParent(child);
                 if (parent == null || parent.GetType() == typeof(XamlDisplayerHost)) return child;
                 return FindFisrtChildOfXamlDisplayerHost(parent);
