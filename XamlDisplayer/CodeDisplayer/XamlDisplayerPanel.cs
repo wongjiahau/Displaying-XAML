@@ -217,6 +217,29 @@ namespace CodeDisplayer {
             }
         }
         #endregion
+
+        #region SearchedTextProperty
+        public string SearchedText {
+            get { return (string)GetValue(SearchedTextProperty); }
+            set { SetValue(SearchedTextProperty , value); }
+        }
+
+        // Using a DependencyProperty as the backing store for SearchedText.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SearchedTextProperty =
+            DependencyProperty.Register("SearchedText" , typeof(string) , typeof(XamlDisplayerPanel) , new PropertyMetadata("" , OnSearchedTextPropertyChanged));
+
+        private static void OnSearchedTextPropertyChanged(DependencyObject dependencyObject , DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs) {
+            var xamlDisplayerPanel = (XamlDisplayerPanel)dependencyObject;
+            string input = ((string)dependencyPropertyChangedEventArgs.NewValue).ToLower();
+            var xamlDisplayers = xamlDisplayerPanel._xamlDisplayers;
+            for (int i = 0 ; i < xamlDisplayers.Count ; i++) {
+                xamlDisplayers[i].Visibility =
+                    xamlDisplayers[i].CodeToBeDisplayed.ToLower().Contains(input)
+                        ? Visibility.Visible
+                        : Visibility.Collapsed;
+            }
+        }
+        #endregion
         #endregion
     }
 }
