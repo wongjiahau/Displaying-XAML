@@ -57,7 +57,8 @@ namespace CodeDisplayer {
 
         private string SearchForSourceFileName() {
             return FindFisrtChildOfXamlDisplayerHost(this).GetType().Name + ".xaml";
-            DependencyObject FindFisrtChildOfXamlDisplayerHost(DependencyObject child) {
+            DependencyObject FindFisrtChildOfXamlDisplayerHost(DependencyObject child)
+            {
                 var parent = LogicalTreeHelper.GetParent(child);
                 if (parent == null || parent.GetType() == typeof(XamlDisplayerHost)) return child;
                 return FindFisrtChildOfXamlDisplayerHost(parent);
@@ -226,11 +227,18 @@ namespace CodeDisplayer {
 
         // Using a DependencyProperty as the backing store for SearchedText.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty SearchedTextProperty =
-            DependencyProperty.Register("SearchedText" , typeof(string) , typeof(XamlDisplayerPanel) , new PropertyMetadata("", OnSearchedTextPropertyChanged));
+            DependencyProperty.Register("SearchedText" , typeof(string) , typeof(XamlDisplayerPanel) , new PropertyMetadata("" , OnSearchedTextPropertyChanged));
 
-        private static void OnSearchedTextPropertyChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs) {
-
-                
+        private static void OnSearchedTextPropertyChanged(DependencyObject dependencyObject , DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs) {
+            var xamlDisplayerPanel = (XamlDisplayerPanel)dependencyObject;
+            string input = ((string)dependencyPropertyChangedEventArgs.NewValue).ToLower();
+            var xamlDisplayers = xamlDisplayerPanel._xamlDisplayers;
+            for (int i = 0 ; i < xamlDisplayers.Count ; i++) {
+                xamlDisplayers[i].Visibility =
+                    xamlDisplayers[i].CodeToBeDisplayed.ToLower().Contains(input)
+                        ? Visibility.Visible
+                        : Visibility.Collapsed;
+            }
         }
         #endregion
         #endregion
