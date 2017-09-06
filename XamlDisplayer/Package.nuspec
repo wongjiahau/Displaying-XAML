@@ -15,6 +15,6 @@
     <tags>WPF Theme-Library</tags>
   </metadata>
   <files>
-    <file src="CodeDisplayer\bin\Release\CodeDisplayer.dll" target="lib\net45\CodeDisplayer.dll"/>
+    <file src="CodeDisplayer\bin\Release\CodeDisplayer.dll" target="lib\net45" />
   </files>
 </package>
