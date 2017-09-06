@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>XamlDisplayerPackage</id>
+    <version>1.0.0</version>
+    <authors>WJHau</authors>
+    <owners>WJHau</owners>
+    <licenseUrl>https://github.com/wongjiahau/Displaying-XAML/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/wongjiahau/Displaying-XAML</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/wongjiahau/Displaying-XAML/master/icon.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>This is a code displaying tool for themes library in WPF</description>
+    <releaseNotes>First release of XamlDisplayer</releaseNotes>
+    <copyright>WJHau Copyright 2017</copyright>
+    <tags>WPF Theme-Library</tags>
+  </metadata>
+  <files>
+    <file src="CodeDisplayer\bin\Release\CodeDisplayer.dll" target="lib\XamlDisplayer"/>
+  </files>
+</package>
