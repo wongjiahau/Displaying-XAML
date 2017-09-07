@@ -17,21 +17,18 @@ namespace CodeDisplayer {
     /// Interaction logic for LoadingScreen.xaml
     /// </summary>
     public partial class LoadingScreen : Window {
-        private static LoadingScreen _singleton;
+        private static LoadingScreen _current;
         private LoadingScreen() {
             InitializeComponent();
         }
 
         public static void Display(string message) {
-            if (_singleton == null) {
-                _singleton = new LoadingScreen();
-            }
-            _singleton.TextBlock.Text = message;
-            _singleton.Show();
+            _current = new LoadingScreen {TextBlock = {Text = message}};
+            _current.Show();
         }
 
         public static void CloseDialog() {
-            _singleton?.Hide();
+            _current.Close();
         }
     }
 }
