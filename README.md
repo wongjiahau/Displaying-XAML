@@ -11,7 +11,7 @@ For example, when I want to use a control in the demo, I have to search through 
 
 ## How to use this library ? 
 ### 1. Install from nuget 
-`Install-Package XamlDisplayerPackage -Version 1.0.2 `
+`Install-Package XamlDisplayerPackage -Version 1.0.3 `
 
 ### 2. Call the XamlDisplayerPanel initializer at the app startup 
 ```C#
