@@ -1,3 +1,4 @@
+
 # Displaying-XAML
 This library is for display the XAML code of theme library for WPF (e.g. MaterialDesignInXamlToolkit/MahApps)
 
@@ -5,9 +6,12 @@ This library is for display the XAML code of theme library for WPF (e.g. Materia
 Because the demo app for the theme library I'm using ([MaterialDesignInXamlToolkit](https://github.com/ButchersBoy/MaterialDesignInXamlToolkit)) is too hard to use.   
 For example, when I want to use a control in the demo, I have to search through its GitHub repo for the code. Obviously, this is a pain, therefore I wrote this library, so that the code can be displayed besides each control.
 
+## Demo
+![newdemo](https://user-images.githubusercontent.com/23183656/30123252-f3db094c-9363-11e7-9ae8-911789b6ae08.gif)
+
 ## How to use this library ? 
 ### 1. Install from nuget 
-`Install-Package XamlDisplayerPackage -Version 1.0.0 `
+`Install-Package XamlDisplayerPackage -Version 1.0.3 `
 
 ### 2. Call the XamlDisplayerPanel initializer at the app startup 
 ```C#
