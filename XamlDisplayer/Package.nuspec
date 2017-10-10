@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>XamlDisplayerPackage</id>
-    <version>1.0.4</version>
+    <version>1.0.5</version>
     <authors>WJHau</authors>
     <owners>WJHau</owners>
     <licenseUrl>https://github.com/wongjiahau/Displaying-XAML/blob/master/LICENSE</licenseUrl>
