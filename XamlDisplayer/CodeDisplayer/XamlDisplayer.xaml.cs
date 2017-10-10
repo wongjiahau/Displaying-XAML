@@ -33,7 +33,10 @@ namespace CodeDisplayer {
                 xamlDisplayer.ContentPresenter.Content = content;
             else {
                 xamlDisplayer.Grid.Visibility = Visibility.Collapsed;
-                xamlDisplayer.StackPanel.Children.Add(content);
+                var sp = xamlDisplayer.StackPanel;
+                sp.HorizontalAlignment = HorizontalAlignment.Left;
+                sp.Margin = new Thickness(0 , 40 , 0 , 0);
+                sp.Children.Add(content);
             }
         }
         #endregion
