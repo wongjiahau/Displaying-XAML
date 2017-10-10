@@ -16,7 +16,10 @@
         <Label HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10" FontWeight="Bold" FontSize="30">XamlDisplayer DEMO</Label>
         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
             <codeDisplayer:XamlDisplayerPanel >
-                <Label codeDisplayer:XamlDisplayer.DisplayCode="False">Set XamlDisplayer.DisplayCode=false so that it's code won't be displayed</Label>
+                <Button></Button>
+                <TextBlock Style="{StaticResource MaterialDesignHeadlineTextBlock}" codeDisplayer:XamlDisplayer.DisplayCode="False">
+                    This is a header
+                </TextBlock>
                 <Label>This is a label</Label>
                 <DatePicker
                     Width="100"
@@ -24,6 +27,7 @@
                     Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
                 <TextBox Width="150" materialDesign:HintAssist.Hint="Floating Hint Textbox" 
                          Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                <Label codeDisplayer:XamlDisplayer.DisplayCode="False">Set XamlDisplayer.DisplayCode=false so that it's code won't be displayed</Label>
                 <Button Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}">
                     <materialDesign:PackIcon Kind="Alarm" Height="24" Width="24" />
                 </Button>
