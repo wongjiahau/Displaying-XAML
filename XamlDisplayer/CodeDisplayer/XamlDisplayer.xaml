@@ -5,8 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CodeDisplayer"             
              mc:Ignorable="d" Loaded="XamlDisplayer_OnLoaded">
-    
-        <Grid x:Name="Grid" HorizontalAlignment="Center" Margin="0 12 0 0">
+
+    <StackPanel HorizontalAlignment="Center" x:Name="StackPanel" Margin="0 12 0 0">
+        <Grid x:Name="Grid" HorizontalAlignment="Center">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition SharedSizeGroup="Content" />
                 <ColumnDefinition SharedSizeGroup="ToggleButton"></ColumnDefinition>
@@ -58,5 +59,5 @@
                 </Border>
             </Popup>
         </Grid>
-    
+    </StackPanel>
 </UserControl>

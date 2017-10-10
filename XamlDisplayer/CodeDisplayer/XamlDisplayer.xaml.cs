@@ -5,6 +5,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Threading;
+using CodeDisplayer;
 
 namespace CodeDisplayer {
     /// <summary>
@@ -28,7 +29,12 @@ namespace CodeDisplayer {
             var xamlDisplayer = d as XamlDisplayer;
             var content = e.NewValue as FrameworkElement;
             if (xamlDisplayer == null || content == null) return;
-            xamlDisplayer.ContentPresenter.Content = content;
+            if (GetDisplayCode(content))
+                xamlDisplayer.ContentPresenter.Content = content;
+            else {
+                xamlDisplayer.Grid.Visibility = Visibility.Collapsed;
+                xamlDisplayer.StackPanel.Children.Add(content);
+            }
         }
         #endregion
 
@@ -46,7 +52,7 @@ namespace CodeDisplayer {
         }
         #endregion
 
-        #region IsCodeDisplayedProperty
+        #region IsCodeDisplayingPanelExpanded
 
 
         public bool IsCodeDisplayingPanelExpanded {
@@ -56,9 +62,9 @@ namespace CodeDisplayer {
 
         // Using a DependencyProperty as the backing store for IsCodeDisplayed.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty IsCodeDisplayingPanelExpandedProperty =
-            DependencyProperty.Register("IsCodeDisplayingPanelExpanded" , typeof(bool) , typeof(XamlDisplayer) , new PropertyMetadata(true , OnIsCodeDisplayedPropertyChanged));
+            DependencyProperty.Register("IsCodeDisplayingPanelExpanded" , typeof(bool) , typeof(XamlDisplayer) , new PropertyMetadata(true , OnIsCodeDisplayingPanelExpandedPropertyChanged));
 
-        private static void OnIsCodeDisplayedPropertyChanged(DependencyObject d , DependencyPropertyChangedEventArgs e) {
+        private static void OnIsCodeDisplayingPanelExpandedPropertyChanged(DependencyObject d , DependencyPropertyChangedEventArgs e) {
             var xamlDisplayer = d as XamlDisplayer;
             if (xamlDisplayer == null) return;
             if ((bool)e.NewValue) {
@@ -134,19 +140,19 @@ namespace CodeDisplayer {
         #endregion
 
         #region AttachedProperties
-        public static readonly DependencyProperty IsCodeDisplayedProperty = DependencyProperty.RegisterAttached(
-          "IsCodeDisplayed" ,
+        public static readonly DependencyProperty DisplayCodeProperty = DependencyProperty.RegisterAttached(
+          "DisplayCode" ,
           typeof(Boolean) ,
           typeof(XamlDisplayerPanel) ,
           new FrameworkPropertyMetadata(true , FrameworkPropertyMetadataOptions.AffectsRender)
         );
 
-        public static void SetIsCodeDisplayed(UIElement element , Boolean value) {
-            element.SetValue(IsCodeDisplayedProperty , value);
+        public static void SetDisplayCode(UIElement element , Boolean value) {
+            element.SetValue(DisplayCodeProperty , value);
         }
 
-        public static Boolean GetIsCodeDisplayed(UIElement element) {
-            return (Boolean)element.GetValue(IsCodeDisplayedProperty);
+        public static Boolean GetDisplayCode(UIElement element) {
+            return (Boolean)element.GetValue(DisplayCodeProperty);
         }
         #endregion
 
@@ -188,3 +194,4 @@ namespace CodeDisplayer {
         #endregion
     }
 }
+

@@ -34,7 +34,7 @@ namespace CodeDisplayer {
         private void LoadControlPanel() {
             if (!IsControlPanelDisplayed) return;
             var controlPanel = new ControlPanel() { DataContext = this };
-            BindingOperations.SetBinding(this , IsCodeDisplayedProperty , new Binding() { Source = controlPanel.IsCodeDisplayedToggleButton , Path = new PropertyPath("IsChecked") });
+            BindingOperations.SetBinding(this , IsCodeDisplayingPanelExpandedProperty , new Binding() { Source = controlPanel.IsCodeDisplayedToggleButton , Path = new PropertyPath("IsChecked") });
             BindingOperations.SetBinding(this , DisplayModeProperty , new Binding() { Source = controlPanel.OrientationToggleButton , Path = new PropertyPath("IsChecked") , Converter = new BoolToDisplayModeConverter() });
             BindingOperations.SetBinding(this , SearchedTextProperty , new Binding() { Source = controlPanel.SearchBox , Path = new PropertyPath("Text") });
             this.Children.Insert(0 , controlPanel);
@@ -48,16 +48,19 @@ namespace CodeDisplayer {
                 switch (_defaultSource) {
                     case SourceEnum.LoadFromRemote:
                         try { xmlDocument.LoadXml(Helper.DownloadFile(RemotePath + SourceFileName)); }
-                        catch (Exception ex) { MessageBox.Show(ex.Message + "\nCannot load file from " + RemotePath + SourceFileName); } break;
+                        catch (Exception ex) { MessageBox.Show(ex.Message + "\nCannot load file from " + RemotePath + SourceFileName); }
+                        break;
                     case SourceEnum.LoadFromLocal:
-                        try { xmlDocument.LoadXml(File.ReadAllText(LocalPath + SourceFileName));  }
-                        catch (Exception ex) { MessageBox.Show(ex.Message + "\nCannot load file from " + LocalPath + SourceFileName); } break;  }
+                        try { xmlDocument.LoadXml(File.ReadAllText(LocalPath + SourceFileName)); }
+                        catch (Exception ex) { MessageBox.Show(ex.Message + "\nCannot load file from " + LocalPath + SourceFileName); }
+                        break;
+                }
             });
             LoadingScreen.CloseDialog();
             WrapEachChildWithXamlDisplayer();
             DisplayXamlCode(xmlDocument);
             OnDisplayModePropertyChanged(this , new DependencyPropertyChangedEventArgs(DisplayModeProperty , null , this.DisplayMode));
-            IsCodeDisplayedPropertyChanged(this , new DependencyPropertyChangedEventArgs(IsCodeDisplayedProperty , null , this.IsCodeDisplayed));
+            IsCodeDisplayedPropertyChanged(this , new DependencyPropertyChangedEventArgs(IsCodeDisplayingPanelExpandedProperty , null , this.IsCodeDisplayingPanelExpanded));
             LoadControlPanel();
         }
 
@@ -188,14 +191,14 @@ namespace CodeDisplayer {
 
         #region DependencyProperties
         #region  IsCodeDisplayedProperty
-        public bool IsCodeDisplayed {
-            get { return (bool)GetValue(IsCodeDisplayedProperty); }
-            set { SetValue(IsCodeDisplayedProperty , value); }
+        public bool IsCodeDisplayingPanelExpanded {
+            get { return (bool)GetValue(IsCodeDisplayingPanelExpandedProperty); }
+            set { SetValue(IsCodeDisplayingPanelExpandedProperty , value); }
         }
 
         // Using a DependencyProperty as the backing store for IsCodeDisplayed.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty IsCodeDisplayedProperty =
-            DependencyProperty.Register("IsCodeDisplayed" , typeof(bool) , typeof(XamlDisplayerPanel) , new PropertyMetadata(true , IsCodeDisplayedPropertyChanged));
+        public static readonly DependencyProperty IsCodeDisplayingPanelExpandedProperty =
+            DependencyProperty.Register("IsCodeDisplayingPanelExpanded" , typeof(bool) , typeof(XamlDisplayerPanel) , new PropertyMetadata(true , IsCodeDisplayedPropertyChanged));
 
         private static void IsCodeDisplayedPropertyChanged(DependencyObject dependencyObject , DependencyPropertyChangedEventArgs e) {
             var d = dependencyObject as XamlDisplayerPanel;
