@@ -16,6 +16,7 @@
         <Label HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10" FontWeight="Bold" FontSize="30">XamlDisplayer DEMO</Label>
         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
             <codeDisplayer:XamlDisplayerPanel >
+                <Label codeDisplayer:XamlDisplayer.DisplayCode="False">Set XamlDisplayer.DisplayCode=false so that it's code won't be displayed</Label>
                 <Label>This is a label</Label>
                 <DatePicker
                     Width="100"
