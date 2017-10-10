@@ -1,4 +1,8 @@
 ﻿# Changelog
+## [1.0.5]
+### Change
+- Now element whose XamlDisplayer.DisplayCode is false will have left alignment and more top margin
+
 ## [1.0.4]
 ### Added
 - Added `IsControlPanelDisplayed` static property to XamlDisplayerPanel (which is set to false by default)
