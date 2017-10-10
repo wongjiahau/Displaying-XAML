@@ -204,7 +204,7 @@ namespace CodeDisplayer {
             foreach (var child in d.Children) {
                 var xamlDisplayer = child as XamlDisplayer;
                 if (xamlDisplayer == null) continue;
-                xamlDisplayer.IsCodeDisplayed = newValue;
+                xamlDisplayer.IsCodeDisplayingPanelExpanded = newValue;
             }
         }
 

@@ -49,14 +49,14 @@ namespace CodeDisplayer {
         #region IsCodeDisplayedProperty
 
 
-        public bool IsCodeDisplayed {
-            get { return (bool)GetValue(IsCodeDisplayedProperty); }
-            set { SetValue(IsCodeDisplayedProperty , value); }
+        public bool IsCodeDisplayingPanelExpanded {
+            get { return (bool)GetValue(IsCodeDisplayingPanelExpandedProperty); }
+            set { SetValue(IsCodeDisplayingPanelExpandedProperty , value); }
         }
 
         // Using a DependencyProperty as the backing store for IsCodeDisplayed.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty IsCodeDisplayedProperty =
-            DependencyProperty.Register("IsCodeDisplayed" , typeof(bool) , typeof(XamlDisplayer) , new PropertyMetadata(true , OnIsCodeDisplayedPropertyChanged));
+        public static readonly DependencyProperty IsCodeDisplayingPanelExpandedProperty =
+            DependencyProperty.Register("IsCodeDisplayingPanelExpanded" , typeof(bool) , typeof(XamlDisplayer) , new PropertyMetadata(true , OnIsCodeDisplayedPropertyChanged));
 
         private static void OnIsCodeDisplayedPropertyChanged(DependencyObject d , DependencyPropertyChangedEventArgs e) {
             var xamlDisplayer = d as XamlDisplayer;
@@ -133,6 +133,23 @@ namespace CodeDisplayer {
 
         #endregion
 
+        #region AttachedProperties
+        public static readonly DependencyProperty IsCodeDisplayedProperty = DependencyProperty.RegisterAttached(
+          "IsCodeDisplayed" ,
+          typeof(Boolean) ,
+          typeof(XamlDisplayerPanel) ,
+          new FrameworkPropertyMetadata(true , FrameworkPropertyMetadataOptions.AffectsRender)
+        );
+
+        public static void SetIsCodeDisplayed(UIElement element , Boolean value) {
+            element.SetValue(IsCodeDisplayedProperty , value);
+        }
+
+        public static Boolean GetIsCodeDisplayed(UIElement element) {
+            return (Boolean)element.GetValue(IsCodeDisplayedProperty);
+        }
+        #endregion
+
         #region EventHandlers        
         private void CopyButton_OnClicked(object sender , RoutedEventArgs e) {
             Clipboard.SetDataObject(TextEditor.SelectedText.Length == 0 ? TextEditor.Text : TextEditor.SelectedText);
@@ -161,7 +178,6 @@ namespace CodeDisplayer {
             c.HorizontalAlignment = HorizontalAlignment.Center;
             c.VerticalAlignment = VerticalAlignment.Center;
         }
-        #endregion
 
         private void ContentArea_OnLoaded(object sender , RoutedEventArgs e) {
             if (ContentArea.ActualHeight > TextEditor.MaxHeight)
@@ -169,5 +185,6 @@ namespace CodeDisplayer {
             if (ContentArea.ActualWidth > TextEditor.MaxWidth)
                 TextEditor.MaxWidth = ContentArea.ActualWidth;
         }
+        #endregion
     }
 }
