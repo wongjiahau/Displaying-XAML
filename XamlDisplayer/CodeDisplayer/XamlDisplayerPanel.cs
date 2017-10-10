@@ -15,6 +15,7 @@ using Xavalon.XamlStyler.Core.Options;
 
 namespace CodeDisplayer {
     public class XamlDisplayerPanel : StackPanel {
+        public static bool IsControlPanelDisplayed = false;
         public SourceEnum Source { get; set; } = SourceEnum.Null;
         public string LocalPath { get; set; } = null;
         public string RemotePath { get; set; } = null;
@@ -31,6 +32,7 @@ namespace CodeDisplayer {
         }
 
         private void LoadControlPanel() {
+            if (!IsControlPanelDisplayed) return;
             var controlPanel = new ControlPanel() { DataContext = this };
             BindingOperations.SetBinding(this , IsCodeDisplayedProperty , new Binding() { Source = controlPanel.IsCodeDisplayedToggleButton , Path = new PropertyPath("IsChecked") });
             BindingOperations.SetBinding(this , DisplayModeProperty , new Binding() { Source = controlPanel.OrientationToggleButton , Path = new PropertyPath("IsChecked") , Converter = new BoolToDisplayModeConverter() });
@@ -254,6 +256,7 @@ namespace CodeDisplayer {
             }
         }
         #endregion
+
         #endregion
     }
 }
