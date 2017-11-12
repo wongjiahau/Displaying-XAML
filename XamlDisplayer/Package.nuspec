@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>XamlDisplayerPackage</id>
-    <version>1.0.5</version>
+    <version>1.0.6</version>
     <authors>WJHau</authors>
     <owners>WJHau</owners>
     <licenseUrl>https://github.com/wongjiahau/Displaying-XAML/blob/master/LICENSE</licenseUrl>
@@ -10,7 +10,7 @@
     <iconUrl>https://raw.githubusercontent.com/wongjiahau/Displaying-XAML/master/icon.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>This is a code displaying tool for themes library in WPF</description>
-    <releaseNotes>Added DisplayCode attached property for XamlDisplayer.
+    <releaseNotes>Remove unnecessary frame, fixing Material Design In XAML demo
       Changelog can be found below : 
       https://github.com/wongjiahau/Displaying-XAML/blob/master/XamlDisplayer/CodeDisplayer/Changelog.md
     </releaseNotes>
