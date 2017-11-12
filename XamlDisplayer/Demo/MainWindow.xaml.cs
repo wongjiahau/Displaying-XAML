@@ -19,7 +19,7 @@ namespace DisplayXamlDemo {
     public partial class MainWindow : Window {
         public MainWindow() {
             InitializeComponent();
-            XamlDisplayerHost.Navigate(new Page1());
+            
         }
     }
 

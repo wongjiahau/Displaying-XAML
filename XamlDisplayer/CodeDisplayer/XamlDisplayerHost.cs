@@ -7,9 +7,8 @@ using System.Windows.Controls;
 using System.Windows.Navigation;
 
 namespace CodeDisplayer {
-    public class XamlDisplayerHost : Frame{
-        public XamlDisplayerHost() {
-            this.NavigationUIVisibility = NavigationUIVisibility.Hidden;
-        }
+    public class XamlDisplayerHost : ContentControl
+    {
+        
     }
 }
